@@ -1,6 +1,10 @@
 import { heroImage } from "../../data/content";
 import { useNavigate } from "react-router-dom";
 
+// Free-stock looping beauty video; replace with your own URL when ready.
+const HERO_VIDEO_URL =
+  "https://videos.pexels.com/video-files/8074200/8074200-uhd_2160_4096_25fps.mp4";
+
 export default function Hero() {
   const navigate = useNavigate();
   return (
@@ -20,11 +24,23 @@ export default function Hero() {
               data-testid="hero-image"
               className="relative aspect-[3/4] w-full max-w-[460px] mx-auto magazine-shadow rounded-[2px] overflow-hidden bg-[#e7c9d0]"
             >
-              <img
-                src={heroImage}
-                alt="Signature glam look by Meera Sakhrani"
+              <video
+                data-testid="hero-video"
+                autoPlay
+                loop
+                muted
+                playsInline
+                poster={heroImage}
+                preload="metadata"
                 className="absolute inset-0 w-full h-full object-cover"
-              />
+              >
+                <source src={HERO_VIDEO_URL} type="video/mp4" />
+                <img
+                  src={heroImage}
+                  alt="Signature glam look by Meera Sakhrani"
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+              </video>
             </div>
 
             {/* 6 Hours badge — bottom-left corner of the image */}
@@ -59,7 +75,7 @@ export default function Hero() {
               </span>
               <span
                 data-testid="hero-title-glamlook"
-                className="block font-serif-display font-bold uppercase text-[48px] sm:text-[72px] md:text-[96px] leading-[0.95] tracking-[-0.015em] text-[#7c5a6e] mt-1"
+                className="block whitespace-nowrap font-serif-display font-bold uppercase text-[44px] sm:text-[60px] md:text-[78px] lg:text-[84px] leading-[0.95] tracking-[-0.015em] text-[#7c5a6e] mt-1"
               >
                 Glam Look
               </span>

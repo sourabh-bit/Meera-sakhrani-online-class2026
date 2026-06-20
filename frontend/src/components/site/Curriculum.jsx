@@ -16,9 +16,10 @@ export default function Curriculum() {
             </div>
             <h2
               data-testid="curriculum-title"
-              className="mt-5 font-serif-display text-[38px] md:text-[58px] leading-[1.02] text-[#3b2f33]"
+              className="mt-5 font-serif-display text-[32px] sm:text-[40px] md:text-[58px] leading-[1.02] text-[#3b2f33]"
             >
-              What you<br />will <span className="italic text-[#7c5a6e]">learn</span>
+              What you will{" "}
+              <span className="italic text-[#7c5a6e]">learn</span>
             </h2>
             <p className="mt-6 text-[15px] leading-[1.7] text-[#5a4750] max-w-sm mx-auto lg:mx-0">
               Two focused chapters · taught on real skin · designed to recreate
