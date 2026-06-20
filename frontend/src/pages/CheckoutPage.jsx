@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { Copy, Check, ArrowLeft, ShieldCheck, Loader2 } from "lucide-react";
+import {
+  Copy,
+  Check,
+  ArrowLeft,
+  Loader2,
+  PartyPopper,
+  XCircle,
+  Hourglass,
+} from "lucide-react";
 
 const API = (process.env.REACT_APP_BACKEND_URL || "") + "/api";
 
@@ -25,6 +33,29 @@ export default function CheckoutPage() {
       .then(setPaymentInfo)
       .catch(() => {});
   }, []);
+
+  // Poll status while on DONE step and still pending
+  useEffect(() => {
+    if (step !== STEPS.DONE || !reservation?.mpm_id) return;
+    if (reservation.status !== "pending") return;
+    let alive = true;
+    const tick = async () => {
+      try {
+        const r = await fetch(`${API}/reservations/${reservation.mpm_id}`);
+        if (!r.ok) return;
+        const data = await r.json();
+        if (alive) setReservation(data);
+      } catch {
+        /* ignore */
+      }
+    };
+    const id = setInterval(tick, 4000);
+    tick();
+    return () => {
+      alive = false;
+      clearInterval(id);
+    };
+  }, [step, reservation?.mpm_id, reservation?.status]);
 
   const onCreate = async (e) => {
     e.preventDefault();
@@ -80,28 +111,31 @@ export default function CheckoutPage() {
 
   return (
     <div className="min-h-screen bg-[#f5ede7]" data-testid="checkout-page">
-      <header className="max-w-[1100px] mx-auto px-6 md:px-10 py-6 md:py-8 flex items-center justify-between">
+      <header className="max-w-[1100px] mx-auto px-5 md:px-10 py-5 md:py-8 flex items-center justify-between">
         <button
           onClick={() => navigate("/")}
           data-testid="checkout-back"
-          className="inline-flex items-center gap-2 text-[11px] tracking-[0.3em] uppercase text-[#3b2f33] hover:text-[#7c5a6e] transition-colors"
+          className="inline-flex items-center gap-2 text-[10px] md:text-[11px] tracking-[0.3em] uppercase text-[#3b2f33] hover:text-[#7c5a6e] transition-colors"
         >
           <ArrowLeft size={14} /> Back
         </button>
         <Link
           to="/"
-          className="font-serif-display italic text-[20px] md:text-[24px] text-[#2d2326]"
+          className="font-serif-display italic text-[18px] md:text-[24px] text-[#2d2326]"
         >
           Meera Sakhrani
         </Link>
         <div className="w-12" />
       </header>
 
-      <div className="max-w-[1100px] mx-auto px-6 md:px-10 pb-24">
+      <div className="max-w-[1100px] mx-auto px-5 md:px-10 pb-28 md:pb-24">
         {/* Stepper */}
-        <div className="flex items-center justify-center gap-4 md:gap-6">
+        <div className="flex items-center justify-center gap-2 sm:gap-4 md:gap-6 flex-wrap">
           {["Details", "Payment", "Confirmed"].map((s, i) => (
-            <div key={s} className="flex items-center gap-4 md:gap-6">
+            <div
+              key={s}
+              className="flex items-center gap-2 sm:gap-4 md:gap-6"
+            >
               <div className="flex items-center gap-2">
                 <span
                   className={`w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-semibold transition-colors ${
@@ -113,7 +147,7 @@ export default function CheckoutPage() {
                   {step > i ? <Check size={13} /> : i + 1}
                 </span>
                 <span
-                  className={`text-[10px] tracking-[0.3em] uppercase font-semibold ${
+                  className={`text-[9.5px] sm:text-[10px] tracking-[0.28em] sm:tracking-[0.3em] uppercase font-semibold ${
                     step >= i ? "text-[#3b2f33]" : "text-[#a48b95]"
                   }`}
                 >
@@ -122,7 +156,7 @@ export default function CheckoutPage() {
               </div>
               {i < 2 && (
                 <span
-                  className={`h-px w-6 md:w-12 ${
+                  className={`h-px w-5 sm:w-6 md:w-12 ${
                     step > i ? "bg-[#7c5a6e]" : "bg-[#dcc8be]"
                   }`}
                 />
@@ -131,7 +165,7 @@ export default function CheckoutPage() {
           ))}
         </div>
 
-        <h1 className="mt-12 md:mt-16 text-center font-serif-display text-[40px] md:text-[60px] leading-[1.02] text-[#3b2f33]">
+        <h1 className="mt-10 md:mt-16 text-center font-serif-display text-[34px] sm:text-[42px] md:text-[60px] leading-[1.02] text-[#3b2f33]">
           {step === STEPS.FORM && (
             <>
               Reserve your <span className="italic text-[#7c5a6e]">seat</span>
@@ -142,20 +176,39 @@ export default function CheckoutPage() {
               Pay by <span className="italic text-[#7c5a6e]">UPI</span>
             </>
           )}
-          {step === STEPS.DONE && (
+          {step === STEPS.DONE && reservation?.status === "approved" && (
             <>
-              You&apos;re <span className="italic text-[#7c5a6e]">in.</span>
+              Seat <span className="italic text-[#1f6f4e]">reserved.</span>
             </>
           )}
+          {step === STEPS.DONE && reservation?.status === "rejected" && (
+            <>
+              Payment <span className="italic text-[#7a1f2a]">not verified.</span>
+            </>
+          )}
+          {step === STEPS.DONE &&
+            (!reservation?.status || reservation?.status === "pending") && (
+              <>
+                You&apos;re almost{" "}
+                <span className="italic text-[#7c5a6e]">in.</span>
+              </>
+            )}
         </h1>
 
-        <p className="mt-4 text-center text-[15px] md:text-[16px] text-[#5a4750] max-w-xl mx-auto">
+        <p className="mt-3 md:mt-4 text-center text-[14px] md:text-[16px] text-[#5a4750] max-w-xl mx-auto px-2">
           {step === STEPS.FORM &&
             "Tell us a little about you — we'll send your confirmation here."}
           {step === STEPS.PAY &&
             "Scan the QR or use the UPI ID below. Then enter your UTR / reference number."}
           {step === STEPS.DONE &&
-            "Thanks — your payment is being verified. You'll hear from us soon."}
+            reservation?.status === "approved" &&
+            "Your payment has been verified. Welcome to the masterclass — see you on the day."}
+          {step === STEPS.DONE &&
+            reservation?.status === "rejected" &&
+            "We couldn't verify this payment. Please contact us at hello@meerasakhrani.school with your reservation ID."}
+          {step === STEPS.DONE &&
+            (!reservation?.status || reservation?.status === "pending") &&
+            "Thanks — your payment is being verified. This page will update once our team confirms."}
         </p>
 
         <div className="mt-10 md:mt-14">
@@ -321,42 +374,80 @@ export default function CheckoutPage() {
           {step === STEPS.DONE && reservation && (
             <div
               data-testid="success-panel"
-              className="max-w-xl mx-auto bg-white/70 border border-[#e3d2c8] rounded-sm p-8 md:p-12 text-center"
+              className="max-w-xl mx-auto bg-white/70 border border-[#e3d2c8] rounded-sm p-6 md:p-12 text-center"
             >
-              <div className="mx-auto w-14 h-14 rounded-full bg-[#efd9e0] flex items-center justify-center">
-                <ShieldCheck size={24} className="text-[#7c5a6e]" />
-              </div>
-              <h3 className="mt-6 font-serif-display text-[26px] md:text-[32px] text-[#3b2f33]">
-                Payment submitted
+              {reservation.status === "approved" && (
+                <div className="mx-auto w-14 h-14 rounded-full bg-[#dcf0e6] flex items-center justify-center">
+                  <PartyPopper size={24} className="text-[#1f6f4e]" />
+                </div>
+              )}
+              {reservation.status === "rejected" && (
+                <div className="mx-auto w-14 h-14 rounded-full bg-[#f6e0e3] flex items-center justify-center">
+                  <XCircle size={24} className="text-[#7a1f2a]" />
+                </div>
+              )}
+              {(!reservation.status || reservation.status === "pending") && (
+                <div className="mx-auto w-14 h-14 rounded-full bg-[#efd9e0] flex items-center justify-center relative">
+                  <Hourglass size={22} className="text-[#7c5a6e]" />
+                  <span className="absolute inset-0 rounded-full ring-2 ring-[#7c5a6e]/30 animate-ping" />
+                </div>
+              )}
+
+              <h3 className="mt-5 md:mt-6 font-serif-display text-[24px] md:text-[32px] text-[#3b2f33]">
+                {reservation.status === "approved" && "Your seat is confirmed"}
+                {reservation.status === "rejected" && "Reservation rejected"}
+                {(!reservation.status || reservation.status === "pending") &&
+                  "Payment submitted"}
               </h3>
-              <p className="mt-3 text-[14.5px] md:text-[15px] text-[#5a4750] leading-relaxed">
-                We&apos;ve recorded your UTR. Our team will verify and confirm
-                your seat shortly.
+              <p className="mt-2 md:mt-3 text-[14px] md:text-[15px] text-[#5a4750] leading-relaxed px-2">
+                {reservation.status === "approved" &&
+                  "We've sent the masterclass details with the joining link to your email."}
+                {reservation.status === "rejected" &&
+                  "If you believe this is a mistake, write to us at hello@meerasakhrani.school with your reservation ID."}
+                {(!reservation.status || reservation.status === "pending") &&
+                  "We've recorded your UTR. Our team will verify and confirm your seat shortly. This page refreshes automatically."}
               </p>
 
-              <ul className="mt-7 text-left bg-[#f5ede7]/70 border border-[#e3d2c8] rounded-sm p-5 space-y-3">
-                <li className="flex justify-between text-[14px]">
-                  <span className="text-[10px] tracking-[0.28em] uppercase text-[#7c5a6e] font-semibold pt-1">
+              <ul className="mt-6 md:mt-7 text-left bg-[#f5ede7]/70 border border-[#e3d2c8] rounded-sm p-4 md:p-5 space-y-3">
+                <li className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 text-[13.5px] md:text-[14px]">
+                  <span className="text-[10px] tracking-[0.28em] uppercase text-[#7c5a6e] font-semibold">
                     Reservation
                   </span>
-                  <span className="font-serif-body text-[#3b2f33]">
+                  <span className="font-serif-body text-[#3b2f33] sm:text-right break-all">
                     {reservation.mpm_id}
                   </span>
                 </li>
-                <li className="flex justify-between text-[14px]">
-                  <span className="text-[10px] tracking-[0.28em] uppercase text-[#7c5a6e] font-semibold pt-1">
+                <li className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 text-[13.5px] md:text-[14px]">
+                  <span className="text-[10px] tracking-[0.28em] uppercase text-[#7c5a6e] font-semibold">
                     UTR
                   </span>
-                  <span className="font-serif-body text-[#3b2f33] break-all text-right">
+                  <span className="font-serif-body text-[#3b2f33] sm:text-right break-all">
                     {reservation.utr}
                   </span>
                 </li>
-                <li className="flex justify-between text-[14px]">
-                  <span className="text-[10px] tracking-[0.28em] uppercase text-[#7c5a6e] font-semibold pt-1">
+                <li className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 text-[13.5px] md:text-[14px]">
+                  <span className="text-[10px] tracking-[0.28em] uppercase text-[#7c5a6e] font-semibold">
                     Amount
                   </span>
-                  <span className="font-serif-body text-[#3b2f33]">
+                  <span className="font-serif-body text-[#3b2f33] sm:text-right">
                     INR {reservation.amount.toLocaleString("en-IN")}
+                  </span>
+                </li>
+                <li className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 text-[13.5px] md:text-[14px]">
+                  <span className="text-[10px] tracking-[0.28em] uppercase text-[#7c5a6e] font-semibold">
+                    Status
+                  </span>
+                  <span
+                    data-testid="reservation-status"
+                    className={`font-serif-body sm:text-right uppercase tracking-[0.18em] text-[12px] font-semibold ${
+                      reservation.status === "approved"
+                        ? "text-[#1f6f4e]"
+                        : reservation.status === "rejected"
+                          ? "text-[#7a1f2a]"
+                          : "text-[#7c5a6e]"
+                    }`}
+                  >
+                    {reservation.status || "pending"}
                   </span>
                 </li>
               </ul>
@@ -364,7 +455,7 @@ export default function CheckoutPage() {
               <Link
                 to="/"
                 data-testid="back-home-btn"
-                className="mt-8 inline-flex px-8 py-3.5 rounded-full bg-[#7c5a6e] text-[#f5ede7] text-[11px] tracking-[0.32em] uppercase font-semibold hover:bg-[#5d4254] transition-all"
+                className="mt-8 inline-flex w-full sm:w-auto items-center justify-center px-8 py-3.5 rounded-full bg-[#7c5a6e] text-[#f5ede7] text-[11px] tracking-[0.32em] uppercase font-semibold hover:bg-[#5d4254] transition-all"
               >
                 Back to Home
               </Link>
