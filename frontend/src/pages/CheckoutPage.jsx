@@ -130,33 +130,38 @@ export default function CheckoutPage() {
 
       <div className="max-w-[1100px] mx-auto px-5 md:px-10 pb-28 md:pb-24">
         {/* Stepper */}
-        <div className="flex items-center justify-center gap-2 sm:gap-4 md:gap-6 flex-wrap">
-          {["Details", "Payment", "Confirmed"].map((s, i) => (
+        <div className="flex items-center justify-center gap-1.5 sm:gap-4 md:gap-6 flex-nowrap">
+          {[
+            { full: "Details", short: "Details" },
+            { full: "Payment", short: "Pay" },
+            { full: "Confirmed", short: "Done" },
+          ].map((s, i) => (
             <div
-              key={s}
-              className="flex items-center gap-2 sm:gap-4 md:gap-6"
+              key={s.full}
+              className="flex items-center gap-1.5 sm:gap-4 md:gap-6"
             >
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5 sm:gap-2">
                 <span
-                  className={`w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-semibold transition-colors ${
+                  className={`shrink-0 w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[10px] sm:text-[11px] font-semibold transition-colors ${
                     step >= i
                       ? "bg-[#7c5a6e] text-[#f5ede7]"
                       : "bg-[#efd9e0] text-[#7c5a6e]"
                   }`}
                 >
-                  {step > i ? <Check size={13} /> : i + 1}
+                  {step > i ? <Check size={12} /> : i + 1}
                 </span>
                 <span
-                  className={`text-[9.5px] sm:text-[10px] tracking-[0.28em] sm:tracking-[0.3em] uppercase font-semibold ${
+                  className={`text-[9px] sm:text-[10px] tracking-[0.24em] sm:tracking-[0.3em] uppercase font-semibold whitespace-nowrap ${
                     step >= i ? "text-[#3b2f33]" : "text-[#a48b95]"
                   }`}
                 >
-                  {s}
+                  <span className="sm:hidden">{s.short}</span>
+                  <span className="hidden sm:inline">{s.full}</span>
                 </span>
               </div>
               {i < 2 && (
                 <span
-                  className={`h-px w-5 sm:w-6 md:w-12 ${
+                  className={`h-px w-3 sm:w-6 md:w-12 shrink-0 ${
                     step > i ? "bg-[#7c5a6e]" : "bg-[#dcc8be]"
                   }`}
                 />
