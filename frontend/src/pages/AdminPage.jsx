@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { ArrowRight, Loader2, LogOut, RefreshCcw } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ArrowRight, Loader2, LogOut, RefreshCcw, ArrowLeft } from "lucide-react";
 
 const API = (process.env.REACT_APP_BACKEND_URL || "") + "/api";
 const STORAGE_KEY = "msk-admin-passcode";
@@ -51,8 +52,16 @@ function Lock({ onUnlocked }) {
   return (
     <div
       data-testid="admin-lock"
-      className="min-h-screen bg-[#0d0d0d] text-[#f5ede7] flex items-center justify-center px-6"
+      className="min-h-screen bg-[#0d0d0d] text-[#f5ede7] flex items-center justify-center px-6 relative"
     >
+      <Link
+        to="/"
+        data-testid="admin-lock-back"
+        className="absolute top-6 left-6 md:top-8 md:left-8 inline-flex items-center gap-2 text-[10px] md:text-[11px] tracking-[0.3em] uppercase text-white/60 hover:text-white transition-colors"
+      >
+        <ArrowLeft size={14} /> Home
+      </Link>
+
       <form
         onSubmit={submit}
         className="w-full max-w-xl"
@@ -241,6 +250,14 @@ export default function AdminPage() {
   return (
     <div className="min-h-screen bg-[#f5ede7]" data-testid="admin-page">
       <div className="max-w-[1280px] mx-auto px-6 md:px-12 py-12 md:py-16">
+        <Link
+          to="/"
+          data-testid="admin-back"
+          className="inline-flex items-center gap-2 text-[10px] md:text-[11px] tracking-[0.3em] uppercase text-[#3b2f33] hover:text-[#7c5a6e] transition-colors mb-8"
+        >
+          <ArrowLeft size={14} /> Back to Home
+        </Link>
+
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <div>
             <p className="text-[10px] tracking-[0.32em] uppercase text-[#a48b95] font-semibold">

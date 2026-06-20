@@ -35,9 +35,9 @@ export default function Masterclass() {
     >
       <div className="max-w-[1280px] mx-auto px-6 md:px-12">
         {/* Takeaways */}
-        <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-8 md:gap-14 items-end">
+        <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-6 md:gap-14 items-end text-center md:text-left">
           <div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center justify-center md:justify-start gap-3">
               <span className="h-px w-8 md:w-10 bg-[#c08aa0]" />
               <p className="text-[10px] tracking-[0.32em] uppercase text-[#c08aa0] font-medium">
                 Take Home
@@ -45,12 +45,12 @@ export default function Masterclass() {
             </div>
             <h3
               data-testid="takeaways-title"
-              className="mt-4 font-serif-display text-[34px] md:text-[48px] leading-[1.02] text-[#3b2f33]"
+              className="mt-4 font-serif-display text-[32px] md:text-[48px] leading-[1.02] text-[#3b2f33]"
             >
               Take<span className="italic text-[#7c5a6e]">aways</span>
             </h3>
           </div>
-          <p className="text-[14.5px] leading-[1.7] text-[#5a4750] max-w-md md:justify-self-end md:text-right">
+          <p className="text-[14.5px] leading-[1.7] text-[#5a4750] max-w-md mx-auto md:mx-0 md:justify-self-end md:text-right">
             Three tangible assets you carry into every booking after the
             masterclass.
           </p>
@@ -87,9 +87,9 @@ export default function Masterclass() {
 
         {/* Flow — zigzag */}
         <div className="mt-20 md:mt-24">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 text-center md:text-left">
             <div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center justify-center md:justify-start gap-3">
                 <span className="h-px w-8 md:w-10 bg-[#c08aa0]" />
                 <p className="text-[10px] tracking-[0.32em] uppercase text-[#c08aa0] font-medium">
                   The Schedule
@@ -97,7 +97,7 @@ export default function Masterclass() {
               </div>
               <h3
                 data-testid="flow-title"
-                className="mt-4 font-serif-display text-[34px] md:text-[48px] leading-[1.02] text-[#3b2f33]"
+                className="mt-4 font-serif-display text-[32px] md:text-[48px] leading-[1.02] text-[#3b2f33]"
               >
                 Masterclass <span className="italic text-[#7c5a6e]">flow</span>
               </h3>

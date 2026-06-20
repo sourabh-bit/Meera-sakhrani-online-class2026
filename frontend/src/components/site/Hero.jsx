@@ -42,8 +42,8 @@ export default function Hero() {
           </div>
 
           {/* TEXT */}
-          <div className="fade-up order-2 lg:order-1">
-            <div className="flex items-center gap-3">
+          <div className="fade-up order-2 lg:order-1 text-center lg:text-left">
+            <div className="flex items-center justify-center lg:justify-start gap-3">
               <span className="h-px w-8 bg-[#c08aa0]" />
               <p
                 data-testid="hero-eyebrow"
@@ -54,16 +54,16 @@ export default function Hero() {
             </div>
 
             <h1 data-testid="hero-title" className="mt-8 md:mt-10">
-              <span className="block font-serif-display italic font-normal text-[34px] sm:text-[44px] md:text-[58px] leading-[1.02] text-[#3b2f33]">
+              <span className="block font-serif-display italic font-normal text-[32px] sm:text-[44px] md:text-[58px] leading-[1.02] text-[#3b2f33]">
                 Signature
               </span>
               <span
                 data-testid="hero-title-glamlook"
-                className="block font-serif-display font-bold uppercase text-[52px] sm:text-[72px] md:text-[96px] leading-[0.95] tracking-[-0.015em] text-[#7c5a6e] mt-1"
+                className="block font-serif-display font-bold uppercase text-[48px] sm:text-[72px] md:text-[96px] leading-[0.95] tracking-[-0.015em] text-[#7c5a6e] mt-1"
               >
                 Glam Look
               </span>
-              <div className="divider-thin mt-7 md:mt-9" />
+              <div className="divider-thin mt-7 md:mt-9 mx-auto lg:mx-0" />
               <span className="block font-serif-display italic font-normal text-[20px] sm:text-[24px] md:text-[28px] leading-[1.2] text-[#3b2f33] mt-6">
                 by Meera Sakhrani
               </span>
@@ -73,17 +73,17 @@ export default function Hero() {
               Online Masterclass · LIVE
             </p>
 
-            <p className="mt-4 text-[15px] md:text-[16.5px] leading-[1.75] text-[#5a4750] max-w-md">
+            <p className="mt-4 text-[15px] md:text-[16.5px] leading-[1.75] text-[#5a4750] max-w-md mx-auto lg:mx-0">
               A 6-hour live masterclass with Meera Sakhrani — recreate her
               signature glam look from luminous base to sculpted finish, step
               by step.
             </p>
 
-            <div className="mt-8 md:mt-10 flex items-center gap-3 md:gap-4 flex-wrap">
+            <div className="mt-8 md:mt-10 flex items-stretch sm:items-center gap-3 md:gap-4">
               <button
                 data-testid="hero-pay-now-btn"
                 onClick={() => navigate("/checkout")}
-                className="px-7 md:px-9 py-3.5 md:py-4 rounded-full bg-[#7c5a6e] text-[#f5ede7] text-[10.5px] md:text-[11px] tracking-[0.32em] uppercase font-semibold hover:bg-[#5d4254] transition-all shadow-[0_8px_24px_-8px_rgba(124,90,110,0.45)]"
+                className="flex-1 sm:flex-none px-6 md:px-9 py-3.5 md:py-4 rounded-full bg-[#7c5a6e] text-[#f5ede7] text-[10.5px] md:text-[11px] tracking-[0.28em] md:tracking-[0.32em] uppercase font-semibold hover:bg-[#5d4254] transition-all shadow-[0_8px_24px_-8px_rgba(124,90,110,0.45)]"
               >
                 Pay Now
               </button>
@@ -94,7 +94,7 @@ export default function Hero() {
                     .getElementById("curriculum-section")
                     ?.scrollIntoView({ behavior: "smooth" })
                 }
-                className="px-7 md:px-9 py-3.5 md:py-4 rounded-full border border-[#2d2326]/30 text-[#2d2326] text-[10.5px] md:text-[11px] tracking-[0.32em] uppercase font-semibold hover:bg-[#2d2326] hover:text-[#f5ede7] transition-all"
+                className="flex-1 sm:flex-none px-6 md:px-9 py-3.5 md:py-4 rounded-full border border-[#2d2326]/30 text-[#2d2326] text-[10.5px] md:text-[11px] tracking-[0.28em] md:tracking-[0.32em] uppercase font-semibold hover:bg-[#2d2326] hover:text-[#f5ede7] transition-all"
               >
                 View Details
               </button>

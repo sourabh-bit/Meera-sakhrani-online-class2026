@@ -10,9 +10,9 @@ export default function GlamLooks() {
       className="w-full bg-[#efe2da] py-20 md:py-24"
     >
       <div className="max-w-[1280px] mx-auto px-6 md:px-12">
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 md:gap-8">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 md:gap-8 text-center md:text-left">
           <div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center justify-center md:justify-start gap-3">
               <span className="h-px w-8 md:w-10 bg-[#c08aa0]" />
               <p className="text-[10px] md:text-[11px] tracking-[0.32em] uppercase text-[#c08aa0] font-medium">
                 Recent Work
@@ -20,7 +20,7 @@ export default function GlamLooks() {
             </div>
             <h2
               data-testid="glam-title"
-              className="mt-4 font-serif-display text-[34px] sm:text-[42px] md:text-[54px] leading-[1.05] text-[#3b2f33]"
+              className="mt-4 font-serif-display text-[32px] sm:text-[42px] md:text-[54px] leading-[1.05] text-[#3b2f33]"
             >
               Signature glam looks{" "}
               <span className="italic font-normal text-[#7c5a6e]">
@@ -32,7 +32,7 @@ export default function GlamLooks() {
           <Link
             to="/portfolio"
             data-testid="view-portfolio-btn"
-            className="self-start md:self-auto inline-flex items-center gap-2 px-6 md:px-7 py-3 md:py-3.5 rounded-full border border-[#2d2326]/30 text-[#2d2326] text-[10.5px] md:text-[11px] tracking-[0.32em] uppercase font-semibold hover:bg-[#2d2326] hover:text-[#f5ede7] transition-all whitespace-nowrap"
+            className="self-center md:self-auto inline-flex items-center gap-2 px-6 md:px-7 py-3 md:py-3.5 rounded-full border border-[#2d2326]/30 text-[#2d2326] text-[10.5px] md:text-[11px] tracking-[0.32em] uppercase font-semibold hover:bg-[#2d2326] hover:text-[#f5ede7] transition-all whitespace-nowrap"
           >
             View Portfolio
             <ArrowUpRight size={14} />

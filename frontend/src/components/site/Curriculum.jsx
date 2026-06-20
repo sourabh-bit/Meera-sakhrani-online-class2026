@@ -7,8 +7,8 @@ export default function Curriculum() {
     >
       <div className="max-w-[1280px] mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
-          <div className="lg:col-span-5 lg:sticky lg:top-10">
-            <div className="flex items-center gap-3">
+          <div className="lg:col-span-5 lg:sticky lg:top-10 text-center lg:text-left">
+            <div className="flex items-center justify-center lg:justify-start gap-3">
               <span className="h-px w-10 bg-[#c08aa0]" />
               <p className="text-[10px] tracking-[0.32em] uppercase text-[#c08aa0] font-medium">
                 The Curriculum
@@ -16,11 +16,11 @@ export default function Curriculum() {
             </div>
             <h2
               data-testid="curriculum-title"
-              className="mt-5 font-serif-display text-[40px] md:text-[58px] leading-[1.02] text-[#3b2f33]"
+              className="mt-5 font-serif-display text-[38px] md:text-[58px] leading-[1.02] text-[#3b2f33]"
             >
               What you<br />will <span className="italic text-[#7c5a6e]">learn</span>
             </h2>
-            <p className="mt-6 text-[15px] leading-[1.7] text-[#5a4750] max-w-sm">
+            <p className="mt-6 text-[15px] leading-[1.7] text-[#5a4750] max-w-sm mx-auto lg:mx-0">
               Two focused chapters · taught on real skin · designed to recreate
               Meera&apos;s signature glam look end to end.
             </p>
