@@ -37,11 +37,11 @@ export default function Hero() {
                 <p className="font-serif-display font-bold uppercase text-[#f7c8d3] text-[42px] md:text-[60px] leading-[0.88] tracking-[-0.02em] mt-2 drop-shadow-[0_2px_12px_rgba(0,0,0,0.4)]">
                   Glam
                 </p>
-                <p className="font-serif-display italic text-white text-[13px] md:text-[17px] leading-none mt-3 text-center pr-6 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
-                  by Meera Sakhrani
-                </p>
                 <p className="font-serif-display font-bold uppercase text-[#f7c8d3] text-[42px] md:text-[60px] leading-[0.88] tracking-[-0.02em] mt-2 text-right drop-shadow-[0_2px_12px_rgba(0,0,0,0.4)]">
                   Look
+                </p>
+                <p className="font-serif-display italic text-white text-[13px] md:text-[17px] leading-none mt-3 text-center pr-6 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
+                  by Meera Sakhrani
                 </p>
               </div>
 
@@ -94,14 +94,14 @@ export default function Hero() {
               >
                 Glam
               </span>
-              <span className="block font-serif-display italic font-normal text-[20px] sm:text-[26px] md:text-[32px] leading-[1.1] text-[#3b2f33] text-center my-2 md:my-3">
-                by Meera Sakhrani
-              </span>
               <span
                 data-testid="hero-title-look"
-                className="block font-serif-display font-bold uppercase text-[60px] sm:text-[80px] md:text-[104px] leading-[0.9] tracking-[-0.015em] text-[#7c5a6e] text-right"
+                className="block font-serif-display font-bold uppercase text-[60px] sm:text-[80px] md:text-[104px] leading-[0.9] tracking-[-0.015em] text-[#7c5a6e] text-right mt-1 md:mt-2"
               >
                 Look
+              </span>
+              <span className="block font-serif-display italic font-normal text-[20px] sm:text-[26px] md:text-[32px] leading-[1.1] text-[#3b2f33] text-center mt-3 md:mt-4">
+                by Meera Sakhrani
               </span>
             </h1>
 

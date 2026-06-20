@@ -62,11 +62,11 @@ export default function Booking() {
           </p>
         </div>
 
-        <div className="mt-14 md:mt-16 grid grid-cols-1 md:grid-cols-5 gap-6 lg:gap-8 items-start max-w-5xl mx-auto">
-          {/* LEFT — At a glance details (clean, no bank block) */}
+        <div className="mt-14 md:mt-16 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-stretch max-w-5xl mx-auto">
+          {/* LEFT — At a glance details */}
           <div
             data-testid="details-card"
-            className="md:col-span-3 bg-[#efd9e0] border border-[#e3c3cd] rounded-sm p-7 md:p-9"
+            className="bg-[#efd9e0] border border-[#e3c3cd] rounded-sm p-7 md:p-9 flex flex-col"
           >
             <div className="flex items-center gap-3">
               <span className="h-px w-8 bg-[#7c5a6e]" />
@@ -78,7 +78,7 @@ export default function Booking() {
               The <span className="italic">details</span>
             </h3>
 
-            <ul className="mt-7 md:mt-8 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
+            <ul className="mt-7 md:mt-8 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5 flex-1">
               {details.map((d) => {
                 const Icon = d.icon;
                 return (
@@ -103,7 +103,7 @@ export default function Booking() {
           {/* RIGHT — Compact booking card */}
           <div
             data-testid="booking-card"
-            className="md:col-span-2 relative bg-[#f1e2d8] border border-[#e3d2c8] rounded-sm p-7 md:p-8 flex flex-col items-center text-center overflow-hidden"
+            className="relative bg-[#f1e2d8] border border-[#e3d2c8] rounded-sm p-7 md:p-9 flex flex-col items-center text-center overflow-hidden"
             style={{
               backgroundImage:
                 "radial-gradient(circle at 1px 1px, rgba(124,90,110,0.12) 1px, transparent 0)",
