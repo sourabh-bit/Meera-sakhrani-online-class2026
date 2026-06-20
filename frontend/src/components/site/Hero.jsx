@@ -18,26 +18,29 @@ export default function Hero() {
           </p>
 
           <h1 className="mt-10">
-            <span className="block font-serif-display italic font-normal text-[44px] md:text-[60px] leading-[1.05] text-[#3b2f33]">
-              The Future of
+            <span className="block font-serif-display italic font-normal text-[40px] md:text-[54px] leading-[1.05] text-[#3b2f33]">
+              Signature
             </span>
             <span
               data-testid="hero-title-makeup"
-              className="block font-serif-display font-bold uppercase text-[76px] md:text-[120px] leading-[0.95] tracking-[-0.01em] text-[#7c5a6e] mt-2"
+              className="block font-serif-display font-bold uppercase text-[64px] md:text-[104px] leading-[0.92] tracking-[-0.01em] text-[#7c5a6e] mt-1"
             >
-              Makeup
+              Glam Look
+            </span>
+            <span className="block font-serif-display italic font-normal text-[26px] md:text-[34px] leading-[1.15] text-[#3b2f33] mt-3">
+              by Meera Sakhrani
             </span>
           </h1>
 
           <div className="divider-thin mt-10" />
 
           <p className="mt-8 font-serif-body italic text-[26px] md:text-[30px] text-[#3b2f33]">
-            Offline Masterclass
+            Online Masterclass · LIVE
           </p>
 
           <p className="mt-6 text-[16px] md:text-[17px] leading-[1.7] text-[#5a4750] max-w-md">
-            An annual 7-day intensive masterclass by Meera Sakhrani. Transform
-            your artistry and elevate your career in the world of bridal makeup.
+            A 6-hour intensive live masterclass by Meera Sakhrani — master the
+            modern luminous bridal look and luxury artistry on every skin tone.
           </p>
 
           <div className="mt-10 flex items-center gap-4 flex-wrap">
@@ -73,14 +76,17 @@ export default function Hero() {
             {/* magazine title overlay */}
             <div className="absolute top-7 left-7 right-7 flex items-start justify-between gap-4">
               <div className="font-serif-display">
-                <p className="italic text-white/95 text-[20px] md:text-[26px] leading-none drop-shadow-[0_2px_8px_rgba(0,0,0,0.25)]">
-                  The Future of
+                <p className="italic text-white/95 text-[18px] md:text-[24px] leading-none drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)]">
+                  Signature
                 </p>
-                <p className="font-bold uppercase text-[#f7c8d3] text-[56px] md:text-[78px] leading-[0.85] tracking-[-0.02em] mt-1 drop-shadow-[0_2px_12px_rgba(0,0,0,0.25)]">
-                  Makeup
+                <p className="font-bold uppercase text-[#f7c8d3] text-[44px] md:text-[64px] leading-[0.85] tracking-[-0.02em] mt-2 drop-shadow-[0_2px_12px_rgba(0,0,0,0.35)]">
+                  Glam Look
+                </p>
+                <p className="italic text-white text-[15px] md:text-[20px] leading-none mt-2 drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)]">
+                  by Meera Sakhrani
                 </p>
               </div>
-              <p className="text-[9px] md:text-[10px] tracking-[0.28em] uppercase text-white font-semibold text-right leading-snug drop-shadow-[0_2px_6px_rgba(0,0,0,0.4)]">
+              <p className="text-[9px] md:text-[10px] tracking-[0.28em] uppercase text-white font-semibold text-right leading-snug drop-shadow-[0_2px_6px_rgba(0,0,0,0.5)]">
                 Meera<br />Sakhrani<br />School
               </p>
             </div>
@@ -88,7 +94,7 @@ export default function Hero() {
             {/* bottom overlay text */}
             <div className="absolute bottom-7 left-7 right-24 md:right-32">
               <p className="text-[11px] md:text-[13px] tracking-[0.2em] uppercase text-white font-semibold leading-snug drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
-                An Annual 7-Days<br />Offline Masterclass
+                A 6-Hour<br />Live Online Masterclass
               </p>
               <p className="mt-1 font-serif-display italic text-white text-[15px] md:text-[18px] drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
                 By Meera Sakhrani
@@ -96,16 +102,16 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* 7 days badge */}
+          {/* duration badge */}
           <div
             data-testid="hero-days-badge"
             className="absolute -bottom-3 left-2 md:left-6 bg-[#f5ede7] border border-[#e3d2c8] px-5 py-3 text-center"
           >
             <p className="font-serif-display text-[34px] md:text-[40px] leading-none text-[#7c5a6e] font-semibold">
-              7
+              6
             </p>
             <p className="text-[9px] tracking-[0.3em] uppercase text-[#8a7480] mt-1">
-              Days
+              Hours
             </p>
           </div>
         </div>
