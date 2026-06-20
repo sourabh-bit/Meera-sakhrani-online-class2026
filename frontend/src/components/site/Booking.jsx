@@ -7,6 +7,7 @@ import {
   Copy,
   Check,
   Landmark,
+  ChevronDown,
 } from "lucide-react";
 
 const details = [
@@ -25,6 +26,7 @@ const payment = [
 
 export default function Booking() {
   const [copied, setCopied] = useState(null);
+  const [openBank, setOpenBank] = useState(false);
 
   const copy = (key, val) => {
     navigator.clipboard?.writeText(val).then(() => {
@@ -35,6 +37,7 @@ export default function Booking() {
 
   return (
     <section
+      id="booking-section"
       data-testid="booking-section"
       className="w-full bg-[#f5ede7] py-20 md:py-24"
     >
@@ -59,11 +62,11 @@ export default function Booking() {
           </p>
         </div>
 
-        <div className="mt-14 md:mt-16 grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10">
-          {/* LEFT — At a glance details */}
+        <div className="mt-14 md:mt-16 grid grid-cols-1 md:grid-cols-5 gap-6 lg:gap-8 items-start max-w-5xl mx-auto">
+          {/* LEFT — At a glance details (clean, no bank block) */}
           <div
             data-testid="details-card"
-            className="bg-[#efd9e0] border border-[#e3c3cd] rounded-[2px] p-8 md:p-12"
+            className="md:col-span-3 bg-[#efd9e0] border border-[#e3c3cd] rounded-sm p-7 md:p-9"
           >
             <div className="flex items-center gap-3">
               <span className="h-px w-8 bg-[#7c5a6e]" />
@@ -71,23 +74,23 @@ export default function Booking() {
                 At a Glance
               </p>
             </div>
-            <h3 className="mt-4 font-serif-display text-[30px] md:text-[40px] leading-[1.05] text-[#3b2f33]">
+            <h3 className="mt-4 font-serif-display text-[28px] md:text-[34px] leading-[1.05] text-[#3b2f33]">
               The <span className="italic">details</span>
             </h3>
 
-            <ul className="mt-8 md:mt-10 space-y-6">
+            <ul className="mt-7 md:mt-8 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
               {details.map((d) => {
                 const Icon = d.icon;
                 return (
-                  <li key={d.label} className="flex items-start gap-4 md:gap-5">
-                    <div className="shrink-0 w-10 h-10 md:w-11 md:h-11 flex items-center justify-center bg-[#f5ede7] rounded-sm">
-                      <Icon size={16} className="text-[#7c5a6e]" />
+                  <li key={d.label} className="flex items-start gap-3.5">
+                    <div className="shrink-0 w-9 h-9 md:w-10 md:h-10 flex items-center justify-center bg-[#f5ede7] rounded-sm">
+                      <Icon size={15} className="text-[#7c5a6e]" />
                     </div>
-                    <div>
-                      <p className="text-[10px] tracking-[0.3em] uppercase text-[#7c5a6e] font-semibold">
+                    <div className="min-w-0">
+                      <p className="text-[9.5px] tracking-[0.28em] uppercase text-[#7c5a6e] font-semibold">
                         {d.label}
                       </p>
-                      <p className="mt-1 font-serif-body text-[19px] md:text-[22px] text-[#3b2f33] leading-snug">
+                      <p className="mt-1 font-serif-body text-[17px] md:text-[19px] text-[#3b2f33] leading-snug">
                         {d.value}
                       </p>
                     </div>
@@ -95,26 +98,78 @@ export default function Booking() {
                 );
               })}
             </ul>
+          </div>
 
-            {/* divider + payment account info (compact) */}
-            <div className="mt-10 pt-8 border-t border-[#e3c3cd]">
-              <div className="flex items-center gap-3">
-                <span className="h-px w-8 bg-[#7c5a6e]" />
-                <p className="text-[10px] tracking-[0.32em] uppercase text-[#7c5a6e] font-medium">
-                  Bank Transfer · UPI
-                </p>
-              </div>
-              <ul className="mt-6 space-y-4">
+          {/* RIGHT — Compact booking card */}
+          <div
+            data-testid="booking-card"
+            className="md:col-span-2 relative bg-[#f1e2d8] border border-[#e3d2c8] rounded-sm p-7 md:p-8 flex flex-col items-center text-center overflow-hidden"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle at 1px 1px, rgba(124,90,110,0.12) 1px, transparent 0)",
+              backgroundSize: "20px 20px",
+            }}
+          >
+            <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#efd9e0] flex items-center justify-center">
+              <Landmark size={20} className="text-[#7c5a6e]" />
+            </div>
+
+            <p className="mt-4 text-[10px] md:text-[11px] tracking-[0.36em] uppercase text-[#3b2f33]/80 font-medium">
+              Booking Amount
+            </p>
+            <p className="mt-2.5 font-serif-display text-[36px] md:text-[44px] leading-[0.95] text-[#7c5a6e] tracking-[-0.01em]">
+              INR <span className="font-semibold">17,700</span>
+            </p>
+            <p className="mt-1.5 font-serif-body italic text-[14px] md:text-[15px] text-[#5a4750]">
+              To secure your seat
+            </p>
+
+            <button
+              data-testid="pay-securely-btn"
+              onClick={() =>
+                document
+                  .getElementById("booking-section")
+                  ?.scrollIntoView({ behavior: "smooth" })
+              }
+              className="mt-6 w-full max-w-xs px-8 py-3.5 rounded-full bg-[#7c5a6e] text-[#f5ede7] text-[11px] tracking-[0.32em] uppercase font-semibold hover:bg-[#5d4254] transition-all shadow-[0_12px_28px_-14px_rgba(124,90,110,0.55)]"
+            >
+              Pay Securely
+            </button>
+
+            <p className="mt-4 text-[11px] md:text-[12px] tracking-[0.04em] text-[#5a4750]">
+              Instant confirmation · Limited seats
+            </p>
+
+            {/* collapsible bank details */}
+            <button
+              data-testid="toggle-bank-details"
+              onClick={() => setOpenBank((o) => !o)}
+              className="mt-5 w-full flex items-center justify-center gap-1.5 text-[10px] tracking-[0.3em] uppercase text-[#7c5a6e] font-semibold hover:text-[#5d4254] transition-colors"
+            >
+              {openBank ? "Hide bank details" : "Show bank · UPI details"}
+              <ChevronDown
+                size={12}
+                className={`transition-transform duration-300 ${
+                  openBank ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+            <div
+              className={`w-full overflow-hidden transition-[max-height,opacity] duration-400 ${
+                openBank ? "max-h-[420px] opacity-100 mt-5" : "max-h-0 opacity-0"
+              }`}
+            >
+              <ul className="space-y-3 text-left bg-[#f5ede7] border border-[#e3d2c8] rounded-sm p-4">
                 {payment.map((p) => (
                   <li
                     key={p.label}
-                    className="flex items-start justify-between gap-4"
+                    className="flex items-start justify-between gap-3"
                   >
                     <div className="min-w-0">
-                      <p className="text-[9.5px] tracking-[0.28em] uppercase text-[#7c5a6e]/85 font-semibold">
+                      <p className="text-[9px] tracking-[0.26em] uppercase text-[#7c5a6e]/85 font-semibold">
                         {p.label}
                       </p>
-                      <p className="mt-0.5 font-serif-body text-[15px] md:text-[17px] text-[#3b2f33] break-all leading-snug">
+                      <p className="mt-0.5 font-serif-body text-[14px] md:text-[15px] text-[#3b2f33] break-all leading-snug">
                         {p.value}
                       </p>
                     </div>
@@ -122,60 +177,18 @@ export default function Booking() {
                       data-testid={`copy-${p.label.toLowerCase().replace(/\s+/g, "-")}`}
                       onClick={() => copy(p.label, p.value)}
                       aria-label={`Copy ${p.label}`}
-                      className="shrink-0 w-9 h-9 rounded-full border border-[#7c5a6e]/30 flex items-center justify-center text-[#7c5a6e] hover:bg-[#7c5a6e] hover:text-[#f5ede7] hover:border-[#7c5a6e] transition-all"
+                      className="shrink-0 w-8 h-8 rounded-full border border-[#7c5a6e]/30 flex items-center justify-center text-[#7c5a6e] hover:bg-[#7c5a6e] hover:text-[#f5ede7] hover:border-[#7c5a6e] transition-all"
                     >
                       {copied === p.label ? (
-                        <Check size={13} />
+                        <Check size={12} />
                       ) : (
-                        <Copy size={13} />
+                        <Copy size={12} />
                       )}
                     </button>
                   </li>
                 ))}
               </ul>
             </div>
-          </div>
-
-          {/* RIGHT — Booking amount card (reference style) */}
-          <div
-            data-testid="booking-card"
-            className="relative bg-[#f1e2d8] border border-[#e3d2c8] rounded-[2px] p-8 md:p-12 flex flex-col items-center text-center overflow-hidden"
-            style={{
-              backgroundImage:
-                "radial-gradient(circle at 1px 1px, rgba(124,90,110,0.12) 1px, transparent 0)",
-              backgroundSize: "22px 22px",
-            }}
-          >
-            {/* bank icon */}
-            <div className="mt-2 w-16 h-16 md:w-20 md:h-20 rounded-full bg-[#efd9e0] flex items-center justify-center">
-              <Landmark size={28} className="text-[#7c5a6e]" />
-            </div>
-
-            <p className="mt-7 text-[11px] md:text-[12px] tracking-[0.42em] uppercase text-[#3b2f33]/80 font-medium">
-              Booking Amount
-            </p>
-            <p className="mt-4 font-serif-display text-[48px] md:text-[72px] leading-[0.95] text-[#7c5a6e] tracking-[-0.01em]">
-              INR <span className="font-semibold">17,700</span>
-            </p>
-            <p className="mt-3 font-serif-body italic text-[16px] md:text-[18px] text-[#5a4750]">
-              To secure your seat
-            </p>
-
-            <div className="mt-8 md:mt-10 w-full max-w-sm h-px bg-[#7c5a6e]/20" />
-
-            <button
-              data-testid="pay-securely-btn"
-              className="mt-8 md:mt-10 px-10 md:px-14 py-4 md:py-4.5 rounded-full bg-[#7c5a6e] text-[#f5ede7] text-[11px] md:text-[12px] tracking-[0.34em] uppercase font-semibold hover:bg-[#5d4254] transition-all shadow-[0_14px_30px_-14px_rgba(124,90,110,0.55)]"
-            >
-              Pay Securely
-            </button>
-
-            <p className="mt-8 text-[12px] md:text-[13px] tracking-[0.05em] text-[#5a4750]">
-              Instant confirmation · Limited seats available
-            </p>
-            <p className="mt-1 text-[12px] md:text-[13px] tracking-[0.05em] text-[#5a4750]/85">
-              Secure your seat with the booking amount
-            </p>
           </div>
         </div>
       </div>

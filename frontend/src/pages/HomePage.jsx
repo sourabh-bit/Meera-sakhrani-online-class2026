@@ -7,6 +7,7 @@ import Curriculum from "../components/site/Curriculum";
 import Masterclass from "../components/site/Masterclass";
 import Attendees from "../components/site/Attendees";
 import Booking from "../components/site/Booking";
+import FloatingBook from "../components/site/FloatingBook";
 
 export default function HomePage() {
   return (
@@ -20,6 +21,7 @@ export default function HomePage() {
       <Venue />
       <Booking />
       <Footer />
+      <FloatingBook />
     </div>
   );
 }

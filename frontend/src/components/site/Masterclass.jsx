@@ -10,20 +10,20 @@ const flow = [
   {
     time: "12:00 — 3:00 PM",
     chapter: "Chapter I",
-    title: "Meera's Signature Bridal Look",
-    body: "Meera's luxury bridal artistry — flawless skin prep, seamless complexion work, and her modern luminous signature finish.",
+    title: "Meera's Signature Glam Look",
+    body: "A live, step-by-step demonstration of the full signature glam — skin prep, luminous base, sculpting, eye, blush and lip artistry on real skin.",
   },
   {
     time: "3:30 — 4:30 PM",
     chapter: "Chapter II",
-    title: "Mastering Dusky Bridal Skin",
-    body: "Undertones, shade matching, complexion balancing, and luxury techniques for radiant skin-like finishes on deeper tones — plus photography & editing tips.",
+    title: "Finishing & Editorial Capture",
+    body: "Lock-in & set the look, refine the finishing details, plus photography lighting and editing tips to showcase your signature glam like a pro.",
   },
   {
     time: "4:30 — 6:00 PM",
     chapter: "Chapter III",
     title: "Q & A with Meera",
-    body: "An intimate, open session — ask anything on technique, business, or building your signature in luxury bridal.",
+    body: "An intimate, open session — ask anything on technique, products, business, or building your signature in the luxury glam industry.",
   },
 ];
 

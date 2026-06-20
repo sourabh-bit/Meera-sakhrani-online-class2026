@@ -1,8 +1,8 @@
 const attendees = [
-  "Aspiring & professional makeup artists wanting to master luxury dusky bridal makeup.",
-  "Artists who've completed basic courses but still struggle with undertones, shade matching & seamless complexion work on deeper tones.",
-  "Creatives who wish to understand luxury bridal artistry, skin prep, product selection & high-end finishing techniques.",
-  "Makeup artists serious about building a signature identity while confidently working on every skin tone.",
+  "Aspiring & professional makeup artists wanting to master Meera's signature glam look.",
+  "Artists who've completed basic courses but want to refine luminous, skin-like glam finishes.",
+  "Creatives who wish to understand signature artistry, product selection & high-end finishing techniques.",
+  "Makeup artists serious about building a signature identity in luxury bridal & editorial glam.",
 ];
 
 export default function Attendees() {
