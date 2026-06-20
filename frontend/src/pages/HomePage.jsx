@@ -6,6 +6,7 @@ import GlamLooks from "../components/site/GlamLooks";
 import Curriculum from "../components/site/Curriculum";
 import Masterclass from "../components/site/Masterclass";
 import Attendees from "../components/site/Attendees";
+import Booking from "../components/site/Booking";
 
 export default function HomePage() {
   return (
@@ -17,6 +18,7 @@ export default function HomePage() {
       <Masterclass />
       <Attendees />
       <Venue />
+      <Booking />
       <Footer />
     </div>
   );

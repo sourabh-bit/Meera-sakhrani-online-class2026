@@ -10,30 +10,36 @@ export default function GlamLooks() {
       className="w-full bg-[#efe2da] py-20 md:py-24"
     >
       <div className="max-w-[1280px] mx-auto px-6 md:px-12">
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 md:gap-8">
           <div>
-            <p className="text-[11px] tracking-[0.32em] uppercase text-[#c08aa0] font-medium">
-              Recent Work
-            </p>
+            <div className="flex items-center gap-3">
+              <span className="h-px w-8 md:w-10 bg-[#c08aa0]" />
+              <p className="text-[10px] md:text-[11px] tracking-[0.32em] uppercase text-[#c08aa0] font-medium">
+                Recent Work
+              </p>
+            </div>
             <h2
               data-testid="glam-title"
-              className="mt-4 font-serif-display text-[40px] md:text-[56px] leading-[1.05] text-[#3b2f33]"
+              className="mt-4 font-serif-display text-[34px] sm:text-[42px] md:text-[54px] leading-[1.05] text-[#3b2f33]"
             >
-              Signature glam looks <span className="italic font-normal">of Meera Sakhrani</span>
+              Signature glam looks{" "}
+              <span className="italic font-normal text-[#7c5a6e]">
+                of Meera Sakhrani
+              </span>
             </h2>
           </div>
 
           <Link
             to="/portfolio"
             data-testid="view-portfolio-btn"
-            className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-[#2d2326]/30 text-[#2d2326] text-[11px] tracking-[0.32em] uppercase font-semibold hover:bg-[#2d2326] hover:text-[#f5ede7] transition-all whitespace-nowrap"
+            className="self-start md:self-auto inline-flex items-center gap-2 px-6 md:px-7 py-3 md:py-3.5 rounded-full border border-[#2d2326]/30 text-[#2d2326] text-[10.5px] md:text-[11px] tracking-[0.32em] uppercase font-semibold hover:bg-[#2d2326] hover:text-[#f5ede7] transition-all whitespace-nowrap"
           >
             View Portfolio
             <ArrowUpRight size={14} />
           </Link>
         </div>
 
-        <div className="mt-14 grid grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
+        <div className="mt-12 md:mt-14 grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           {preview.map((look, idx) => (
             <Link
               key={look.id}
