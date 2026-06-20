@@ -13,10 +13,10 @@ export default function HomePage() {
       <Navbar />
       <Hero />
       <GlamLooks />
-      <Venue />
       <Curriculum />
       <Masterclass />
       <Attendees />
+      <Venue />
       <Footer />
     </div>
   );

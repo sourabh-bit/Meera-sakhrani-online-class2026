@@ -7,7 +7,7 @@ export default function GlamLooks() {
   return (
     <section
       data-testid="glam-section"
-      className="w-full bg-[#efe2da] py-24 md:py-32"
+      className="w-full bg-[#efe2da] py-20 md:py-24"
     >
       <div className="max-w-[1280px] mx-auto px-6 md:px-12">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8">

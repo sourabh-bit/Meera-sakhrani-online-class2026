@@ -20,7 +20,7 @@ export default function Venue() {
   return (
     <section
       data-testid="venue-section"
-      className="w-full bg-[#f5ede7] py-24 md:py-32"
+      className="w-full bg-[#efe2da] py-20 md:py-24"
     >
       <div className="max-w-[1280px] mx-auto px-6 md:px-12">
         <div className="text-center">
@@ -39,7 +39,7 @@ export default function Venue() {
           </p>
         </div>
 
-        <div className="mt-16 md:mt-20 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div className="mt-12 md:mt-16 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div className="relative">
             <div className="aspect-[4/3] w-full overflow-hidden rounded-sm magazine-shadow">
               <img

@@ -1,4 +1,4 @@
-import { Award, ListChecks, BadgeCheck, MessageCircle } from "lucide-react";
+import { Award, ListChecks, BadgeCheck } from "lucide-react";
 
 const takeaways = [
   { icon: Award, label: "Certificate", note: "Official course completion" },
@@ -8,20 +8,22 @@ const takeaways = [
 
 const flow = [
   {
-    time: "12:00 PM – 3:00 PM",
-    title: "Meera's High-Demand Signature Bridal Look",
-    body: "Learn Meera's luxury bridal artistry — from flawless skin prep and seamless complexion work to her modern, luminous signature bridal finish.",
+    time: "12:00 — 3:00 PM",
+    chapter: "Chapter I",
+    title: "Meera's Signature Bridal Look",
+    body: "Meera's luxury bridal artistry — flawless skin prep, seamless complexion work, and her modern luminous signature finish.",
   },
   {
-    time: "3:30 PM – 4:30 PM",
+    time: "3:30 — 4:30 PM",
+    chapter: "Chapter II",
     title: "Mastering Dusky Bridal Skin",
-    body: "Understand undertones, shade matching, complexion balancing, and luxury skin techniques to create radiant, skin-like finishes on deeper skin tones. Plus photography and editing tips to showcase your work like a pro.",
+    body: "Undertones, shade matching, complexion balancing, and luxury techniques for radiant skin-like finishes on deeper tones — plus photography & editing tips.",
   },
   {
-    time: "4:30 PM – 6:00 PM",
+    time: "4:30 — 6:00 PM",
+    chapter: "Chapter III",
     title: "Q & A with Meera",
-    icon: MessageCircle,
-    body: "An intimate, open session — ask anything about technique, business, or building your signature in the luxury bridal industry.",
+    body: "An intimate, open session — ask anything on technique, business, or building your signature in luxury bridal.",
   },
 ];
 
@@ -29,48 +31,53 @@ export default function Masterclass() {
   return (
     <section
       data-testid="masterclass-section"
-      className="w-full bg-[#efe2da] py-24 md:py-32"
+      className="w-full bg-[#efe2da] py-20 md:py-24"
     >
       <div className="max-w-[1280px] mx-auto px-6 md:px-12">
-        {/* Takeaways */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-12 lg:gap-20 items-start">
-          <div>
-            <p className="text-[11px] tracking-[0.32em] uppercase text-[#c08aa0] font-medium">
-              Take Home
-            </p>
-            <h3
-              data-testid="takeaways-title"
-              className="mt-4 font-serif-display text-[38px] md:text-[52px] leading-[1.05] text-[#3b2f33]"
-            >
-              Take<span className="italic text-[#7c5a6e]">aways</span>
-            </h3>
-            <p className="mt-4 text-[15px] text-[#5a4750] leading-relaxed max-w-xs">
-              Three tangible assets you carry into every booking after the
+        {/* Takeaways — single tight row */}
+        <div>
+          <div className="flex items-end justify-between flex-wrap gap-4">
+            <div>
+              <div className="flex items-center gap-3">
+                <span className="h-px w-10 bg-[#c08aa0]" />
+                <p className="text-[10px] tracking-[0.32em] uppercase text-[#c08aa0] font-medium">
+                  Take Home
+                </p>
+              </div>
+              <h3
+                data-testid="takeaways-title"
+                className="mt-4 font-serif-display text-[36px] md:text-[48px] leading-[1.05] text-[#3b2f33]"
+              >
+                Take<span className="italic text-[#7c5a6e]">aways</span>
+              </h3>
+            </div>
+            <p className="text-[14px] text-[#5a4750] max-w-sm">
+              Three tangible assets carried into every booking after the
               masterclass.
             </p>
           </div>
 
-          <ol className="space-y-4">
+          <ol className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-4">
             {takeaways.map((t, i) => {
               const Icon = t.icon;
               return (
                 <li
                   key={t.label}
                   data-testid={`takeaway-${i + 1}`}
-                  className="group flex items-center gap-6 bg-[#f5ede7] border border-[#e3d2c8] rounded-sm px-7 py-6 transition-all duration-300 hover:border-[#7c5a6e] hover:-translate-y-0.5"
+                  className="group relative bg-[#f5ede7] border border-[#e3d2c8] rounded-sm p-6 transition-all duration-300 hover:border-[#7c5a6e] hover:-translate-y-0.5 flex items-center gap-5"
                 >
-                  <span className="font-serif-display italic text-[40px] leading-none text-[#c08aa0]">
+                  <span className="font-serif-display italic text-[28px] leading-none text-[#c08aa0] w-7">
                     0{i + 1}
                   </span>
-                  <span className="w-px h-12 bg-[#e3d2c8]" />
-                  <div className="shrink-0 w-11 h-11 flex items-center justify-center bg-[#f1dde3] rounded-sm">
-                    <Icon size={18} className="text-[#7c5a6e]" />
+                  <span className="w-px h-10 bg-[#e3d2c8]" />
+                  <div className="shrink-0 w-10 h-10 flex items-center justify-center bg-[#f1dde3] rounded-sm">
+                    <Icon size={16} className="text-[#7c5a6e]" />
                   </div>
-                  <div>
-                    <p className="font-serif-display text-[22px] text-[#3b2f33] leading-tight">
+                  <div className="min-w-0">
+                    <p className="font-serif-display text-[18px] text-[#3b2f33] leading-tight">
                       {t.label}
                     </p>
-                    <p className="text-[12px] tracking-[0.18em] uppercase text-[#8a7480] mt-0.5">
+                    <p className="text-[10px] tracking-[0.22em] uppercase text-[#8a7480] mt-0.5">
                       {t.note}
                     </p>
                   </div>
@@ -80,61 +87,59 @@ export default function Masterclass() {
           </ol>
         </div>
 
-        {/* Masterclass Flow */}
-        <div className="mt-24 md:mt-32">
-          <div className="text-center">
-            <p className="text-[11px] tracking-[0.32em] uppercase text-[#c08aa0] font-medium">
-              The Schedule
+        {/* Flow — single-rail vertical timeline */}
+        <div className="mt-20 md:mt-24">
+          <div className="flex items-end justify-between flex-wrap gap-4">
+            <div>
+              <div className="flex items-center gap-3">
+                <span className="h-px w-10 bg-[#c08aa0]" />
+                <p className="text-[10px] tracking-[0.32em] uppercase text-[#c08aa0] font-medium">
+                  The Schedule
+                </p>
+              </div>
+              <h3
+                data-testid="flow-title"
+                className="mt-4 font-serif-display text-[36px] md:text-[48px] leading-[1.05] text-[#3b2f33]"
+              >
+                Masterclass <span className="italic text-[#7c5a6e]">flow</span>
+              </h3>
+            </div>
+            <p className="text-[11px] tracking-[0.32em] uppercase text-[#7c5a6e] font-medium">
+              12:00 PM — 06:00 PM IST
             </p>
-            <h3
-              data-testid="flow-title"
-              className="mt-4 font-serif-display text-[42px] md:text-[60px] leading-[1.05] text-[#3b2f33]"
-            >
-              Masterclass <span className="italic text-[#7c5a6e]">flow</span>
-            </h3>
           </div>
 
-          <div className="mt-14 relative">
-            {/* vertical line */}
-            <div className="hidden md:block absolute left-1/2 top-2 bottom-2 w-px bg-[#d6c0b4] -translate-x-1/2" />
-
-            <div className="space-y-10 md:space-y-16">
-              {flow.map((f, i) => {
-                const isLeft = i % 2 === 0;
-                return (
-                  <div
-                    key={f.time}
-                    data-testid={`flow-${i + 1}`}
-                    className={`md:grid md:grid-cols-2 md:gap-16 items-start ${
-                      isLeft ? "" : "md:[&>*:first-child]:order-2"
-                    }`}
-                  >
-                    <div
-                      className={`relative bg-[#f5ede7] border border-[#e3d2c8] rounded-sm p-7 md:p-9 transition-all duration-500 hover:border-[#7c5a6e] hover:-translate-y-0.5 ${
-                        isLeft ? "md:mr-6" : "md:ml-6"
-                      }`}
-                    >
-                      {/* marker dot */}
-                      <div
-                        className={`hidden md:block absolute top-9 w-3 h-3 rounded-full bg-[#7c5a6e] ring-4 ring-[#efe2da] ${
-                          isLeft ? "-right-[34px]" : "-left-[34px]"
-                        }`}
-                      />
-                      <p className="text-[11px] tracking-[0.3em] uppercase text-[#7c5a6e] font-semibold">
+          <div className="mt-12 relative max-w-3xl mx-auto md:mx-0">
+            {/* vertical rail */}
+            <div className="absolute left-[18px] md:left-[26px] top-3 bottom-3 w-px bg-[#d6c0b4]" />
+            <ol className="space-y-5">
+              {flow.map((f, i) => (
+                <li
+                  key={f.time}
+                  data-testid={`flow-${i + 1}`}
+                  className="relative pl-12 md:pl-16 group"
+                >
+                  {/* marker */}
+                  <span className="absolute left-[10px] md:left-[18px] top-5 w-4 h-4 rounded-full bg-[#7c5a6e] ring-[6px] ring-[#efe2da]" />
+                  <div className="bg-[#f5ede7] border border-[#e3d2c8] rounded-sm px-7 py-6 transition-all duration-300 hover:border-[#7c5a6e] hover:-translate-y-0.5">
+                    <div className="flex items-baseline justify-between gap-4 flex-wrap">
+                      <p className="font-serif-display italic text-[16px] text-[#c08aa0]">
+                        {f.chapter}
+                      </p>
+                      <p className="text-[10px] tracking-[0.3em] uppercase text-[#7c5a6e] font-semibold">
                         {f.time}
                       </p>
-                      <h4 className="mt-3 font-serif-display text-[24px] md:text-[28px] leading-[1.2] text-[#3b2f33]">
-                        {f.title}
-                      </h4>
-                      <p className="mt-4 text-[15px] leading-[1.75] text-[#5a4750]">
-                        {f.body}
-                      </p>
                     </div>
-                    <div />
+                    <h4 className="mt-2 font-serif-display text-[22px] md:text-[26px] leading-[1.2] text-[#3b2f33]">
+                      {f.title}
+                    </h4>
+                    <p className="mt-3 text-[14.5px] leading-[1.7] text-[#5a4750]">
+                      {f.body}
+                    </p>
                   </div>
-                );
-              })}
-            </div>
+                </li>
+              ))}
+            </ol>
           </div>
         </div>
       </div>
