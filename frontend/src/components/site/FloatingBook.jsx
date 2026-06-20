@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 
 export default function FloatingBook() {
   const [visible, setVisible] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const onScroll = () => setVisible(window.scrollY > 320);
@@ -11,10 +13,7 @@ export default function FloatingBook() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const onClick = () =>
-    document
-      .getElementById("booking-section")
-      ?.scrollIntoView({ behavior: "smooth" });
+  const onClick = () => navigate("/checkout");
 
   return (
     <button

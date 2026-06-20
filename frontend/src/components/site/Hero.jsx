@@ -1,6 +1,8 @@
 import { heroImage } from "../../data/content";
+import { useNavigate } from "react-router-dom";
 
 export default function Hero() {
+  const navigate = useNavigate();
   return (
     <section
       id="masterclass"
@@ -80,11 +82,7 @@ export default function Hero() {
             <div className="mt-8 md:mt-10 flex items-center gap-3 md:gap-4 flex-wrap">
               <button
                 data-testid="hero-pay-now-btn"
-                onClick={() =>
-                  document
-                    .getElementById("booking-section")
-                    ?.scrollIntoView({ behavior: "smooth" })
-                }
+                onClick={() => navigate("/checkout")}
                 className="px-7 md:px-9 py-3.5 md:py-4 rounded-full bg-[#7c5a6e] text-[#f5ede7] text-[10.5px] md:text-[11px] tracking-[0.32em] uppercase font-semibold hover:bg-[#5d4254] transition-all shadow-[0_8px_24px_-8px_rgba(124,90,110,0.45)]"
               >
                 Pay Now

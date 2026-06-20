@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Clock,
   Hourglass,
@@ -27,6 +28,7 @@ const payment = [
 export default function Booking() {
   const [copied, setCopied] = useState(null);
   const [openBank, setOpenBank] = useState(false);
+  const navigate = useNavigate();
 
   const copy = (key, val) => {
     navigator.clipboard?.writeText(val).then(() => {
@@ -126,11 +128,7 @@ export default function Booking() {
 
             <button
               data-testid="pay-securely-btn"
-              onClick={() =>
-                document
-                  .getElementById("booking-section")
-                  ?.scrollIntoView({ behavior: "smooth" })
-              }
+              onClick={() => navigate("/checkout")}
               className="mt-6 w-full max-w-xs px-8 py-3.5 rounded-full bg-[#7c5a6e] text-[#f5ede7] text-[11px] tracking-[0.32em] uppercase font-semibold hover:bg-[#5d4254] transition-all shadow-[0_12px_28px_-14px_rgba(124,90,110,0.55)]"
             >
               Pay Securely
