@@ -1,9 +1,18 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Loader2, LogOut, RefreshCcw, ArrowLeft } from "lucide-react";
 
-const API = (process.env.REACT_APP_BACKEND_URL || "") + "/api";
+const API = (process.env.REACT_APP_BACKEND_URL || "http://localhost:8000") + "/api";
 const STORAGE_KEY = "msk-admin-passcode";
+
+async function readJsonResponse(response) {
+  const text = await response.text();
+  try {
+    return text ? JSON.parse(text) : {};
+  } catch {
+    return { detail: text || "Unexpected response from server" };
+  }
+}
 
 const STATUS_TABS = [
   { id: "all", label: "All" },
@@ -37,7 +46,7 @@ function Lock({ onUnlocked }) {
         body: JSON.stringify({ passcode: code }),
       });
       if (!r.ok) {
-        const d = await r.json().catch(() => ({}));
+        const d = await readJsonResponse(r);
         throw new Error(d.detail || "Invalid passcode");
       }
       localStorage.setItem(STORAGE_KEY, code);
@@ -66,7 +75,7 @@ function Lock({ onUnlocked }) {
         onSubmit={submit}
         className="w-full max-w-xl"
       >
-        <p className="text-[10px] tracking-[0.32em] uppercase text-[#a48b95] font-semibold">
+        <p className="text-[10px] tracking-[0.32em] uppercase text-[#9b8a7c] font-semibold">
           Admin
         </p>
         <h1 className="mt-6 font-serif-display text-[56px] md:text-[88px] leading-[0.95] text-white">
@@ -92,7 +101,7 @@ function Lock({ onUnlocked }) {
           type="submit"
           disabled={loading}
           data-testid="admin-unlock-btn"
-          className="mt-10 inline-flex items-center gap-3 bg-white text-[#0d0d0d] px-9 py-4 text-[11px] tracking-[0.34em] uppercase font-semibold hover:bg-[#e2c4ce] transition-all disabled:opacity-60"
+          className="mt-10 inline-flex items-center gap-3 bg-white text-[#0d0d0d] px-9 py-4 text-[11px] tracking-[0.34em] uppercase font-semibold hover:bg-[#e6d6ca] transition-all disabled:opacity-60"
         >
           {loading ? <Loader2 size={14} className="animate-spin" /> : null}
           Unlock <ArrowRight size={14} />
@@ -104,7 +113,7 @@ function Lock({ onUnlocked }) {
 
 function StatusPill({ status }) {
   const map = {
-    pending: "bg-[#efd9e0] text-[#7c5a6e]",
+    pending: "bg-[#eee4d8] text-[#7a6455]",
     approved: "bg-[#1f6f4e] text-[#f5ede7]",
     rejected: "bg-[#7a1f2a] text-[#f5ede7]",
   };
@@ -131,7 +140,7 @@ function ReservationCard({ r, onAct, busy }) {
           <h3 className="font-serif-display text-[28px] md:text-[34px] text-[#3b2f33] leading-tight">
             {r.name}
           </h3>
-          <p className="mt-1 text-[10px] tracking-[0.3em] uppercase text-[#a48b95] font-semibold">
+          <p className="mt-1 text-[10px] tracking-[0.3em] uppercase text-[#9b8a7c] font-semibold">
             {r.mpm_id}
           </p>
         </div>
@@ -152,7 +161,7 @@ function ReservationCard({ r, onAct, busy }) {
           { k: "Decided At", v: r.decided_at ? formatDateTime(r.decided_at) : "—" },
         ].map((row) => (
           <div key={row.k}>
-            <dt className="text-[10px] tracking-[0.3em] uppercase text-[#a48b95] font-semibold">
+            <dt className="text-[10px] tracking-[0.3em] uppercase text-[#9b8a7c] font-semibold">
               {row.k}
             </dt>
             <dd className="mt-1.5 font-serif-body text-[16px] md:text-[17px] text-[#3b2f33] break-all">
@@ -205,7 +214,7 @@ export default function AdminPage() {
         setCode(null);
         return;
       }
-      const data = await r.json();
+      const data = await readJsonResponse(r);
       setList(data || []);
     } finally {
       setLoading(false);
@@ -253,14 +262,14 @@ export default function AdminPage() {
         <Link
           to="/"
           data-testid="admin-back"
-          className="inline-flex items-center gap-2 text-[10px] md:text-[11px] tracking-[0.3em] uppercase text-[#3b2f33] hover:text-[#7c5a6e] transition-colors mb-8"
+          className="inline-flex items-center gap-2 text-[10px] md:text-[11px] tracking-[0.3em] uppercase text-[#3b2f33] hover:text-[#7a6455] transition-colors mb-8"
         >
           <ArrowLeft size={14} /> Back to Home
         </Link>
 
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <div>
-            <p className="text-[10px] tracking-[0.32em] uppercase text-[#a48b95] font-semibold">
+            <p className="text-[10px] tracking-[0.32em] uppercase text-[#9b8a7c] font-semibold">
               Admin
             </p>
             <h1
@@ -313,12 +322,12 @@ export default function AdminPage() {
 
         <div className="mt-12 md:mt-14 space-y-5">
           {loading && (
-            <div className="flex items-center gap-2 text-[#7c5a6e] text-[13px]">
-              <Loader2 size={14} className="animate-spin" /> Loading…
+            <div className="flex items-center gap-2 text-[#7a6455] text-[13px]">
+              <Loader2 size={14} className="animate-spin" /> Loading...
             </div>
           )}
           {!loading && filtered.length === 0 && (
-            <div className="text-center py-20 font-serif-display italic text-[24px] text-[#8a7480]">
+            <div className="text-center py-20 font-serif-display italic text-[24px] text-[#8a7b71]">
               No reservations in this view.
             </div>
           )}
@@ -330,3 +339,6 @@ export default function AdminPage() {
     </div>
   );
 }
+
+
+

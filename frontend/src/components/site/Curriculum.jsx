@@ -1,4 +1,4 @@
-export default function Curriculum() {
+﻿export default function Curriculum() {
   return (
     <section
       id="curriculum-section"
@@ -9,8 +9,8 @@ export default function Curriculum() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
           <div className="lg:col-span-5 lg:sticky lg:top-10 text-center lg:text-left">
             <div className="flex items-center justify-center lg:justify-start gap-3">
-              <span className="h-px w-10 bg-[#c08aa0]" />
-              <p className="text-[10px] tracking-[0.32em] uppercase text-[#c08aa0] font-medium">
+              <span className="h-px w-10 bg-[#b79d8b]" />
+              <p className="text-[10px] tracking-[0.32em] uppercase text-[#b79d8b] font-medium">
                 The Curriculum
               </p>
             </div>
@@ -18,80 +18,68 @@ export default function Curriculum() {
               data-testid="curriculum-title"
               className="mt-5 font-serif-display text-[32px] sm:text-[40px] md:text-[58px] leading-[1.02] text-[#3b2f33]"
             >
-              What you will{" "}
-              <span className="italic text-[#7c5a6e]">learn</span>
+              What you will <span className="italic text-[#6f5c4e]">learn</span>
             </h2>
             <p className="mt-6 text-[15px] leading-[1.7] text-[#5a4750] max-w-sm mx-auto lg:mx-0">
-              Two focused chapters · taught on real skin · designed to recreate
-              Meera&apos;s signature glam look end to end.
+              Two focused chapters · taught on real skin · designed to recreate the signature glam look end to end.
             </p>
           </div>
 
           <div className="lg:col-span-7 space-y-5">
             <article
               data-testid="learn-card-base"
-              className="group relative bg-[#f1e2d8] border border-[#e3d2c8] rounded-sm p-7 md:p-9 transition-all duration-500 hover:border-[#7c5a6e] hover:-translate-y-0.5 overflow-hidden"
+              className="group relative bg-[#f1e2d8] border border-[#e3d2c8] rounded-sm p-7 md:p-9 transition-all duration-500 hover:border-[#7a6455] hover:-translate-y-0.5 overflow-hidden"
             >
-              <span className="absolute -top-2 -right-3 font-serif-display italic text-[110px] leading-none text-[#e2c4ce] select-none opacity-70">
+              <span className="absolute -top-2 -right-3 font-serif-display italic text-[110px] leading-none text-[#e6d6ca] select-none opacity-70">
                 01
               </span>
-              <p className="text-[10px] tracking-[0.32em] uppercase text-[#c08aa0] font-medium">
+              <p className="text-[10px] tracking-[0.32em] uppercase text-[#b79d8b] font-medium">
                 The Luminous Base
               </p>
               <h3 className="mt-3 font-serif-display text-[26px] md:text-[30px] leading-[1.15] text-[#3b2f33] max-w-md">
-                Meera&apos;s Signature Skin
+                Signature Skin
               </h3>
               <p className="mt-4 text-[14.5px] leading-[1.7] text-[#5a4750] max-w-md">
-                Skin prep, complexion balancing and the luxury luminous base
-                that defines the signature glam — luminous, skin-like, and
-                lit from within.
+                Skin prep, complexion balancing and the luxury luminous base that defines the signature glam - luminous, skin-like, and lit from within.
               </p>
             </article>
 
             <article
               data-testid="learn-card-glam"
-              className="group relative bg-[#efd9e0] border border-[#e3c3cd] rounded-sm p-7 md:p-9 transition-all duration-500 hover:border-[#7c5a6e] hover:-translate-y-0.5 overflow-hidden"
+              className="group relative bg-[#eee4d8] border border-[#dfd2c4] rounded-sm p-7 md:p-9 transition-all duration-500 hover:border-[#7a6455] hover:-translate-y-0.5 overflow-hidden"
             >
-              <span className="absolute -top-2 -right-3 font-serif-display italic text-[110px] leading-none text-[#d5a5b5] select-none opacity-70">
+              <span className="absolute -top-2 -right-3 font-serif-display italic text-[110px] leading-none text-[#d6c1b3] select-none opacity-70">
                 02
               </span>
-              <p className="text-[10px] tracking-[0.32em] uppercase text-[#7c5a6e] font-medium">
+              <p className="text-[10px] tracking-[0.32em] uppercase text-[#6f5c4e] font-medium">
                 The Glam Architecture
               </p>
               <h3 className="mt-3 font-serif-display text-[26px] md:text-[30px] leading-[1.15] text-[#3b2f33] max-w-md">
                 Sculpt · Eye · Lip · Finish
               </h3>
               <p className="mt-4 text-[14.5px] leading-[1.7] text-[#5a4750] max-w-md">
-                Sculpting, signature eye work, blush placement, the luxe lip
-                and the editorial finishing that pulls Meera&apos;s signature
-                glam together.
+                Sculpting, signature eye work, blush placement, the luxe lip and the editorial finishing that pulls the signature glam together.
               </p>
             </article>
           </div>
         </div>
 
-        {/* Founder quote */}
         <div
           data-testid="founder-quote"
           className="mt-20 md:mt-24 max-w-3xl mx-auto text-center relative"
         >
-          <span className="absolute -top-6 left-1/2 -translate-x-1/2 font-serif-display text-[80px] leading-none text-[#c08aa0]/50 select-none">
-            “
-          </span>
-          <blockquote className="font-serif-display italic text-[22px] md:text-[28px] leading-[1.45] text-[#3b2f33]">
-            Every breakthrough in my journey came from acting fast. Waiting
-            for the &lsquo;right time&rsquo; only delays success. Urgency
-            builds discipline, confidence, and results.
+          <blockquote className="mx-auto font-serif-body text-[20px] md:text-[26px] leading-[1.65] text-[#3b2f33] max-w-2xl">
+            "Progress comes from acting fast. Waiting for the right time only delays success. Urgency builds discipline, confidence, and results."
           </blockquote>
-          <p className="mt-3 font-serif-display italic text-[22px] md:text-[28px] text-[#7c5a6e]">
+          <p className="mt-4 font-serif-display text-[18px] md:text-[22px] text-[#6f5c4e]">
             Decide, act, and let growth follow.
           </p>
           <div className="mt-7 flex items-center justify-center gap-3">
-            <div className="h-px w-8 bg-[#7c5a6e]" />
-            <p className="text-[11px] tracking-[0.3em] uppercase text-[#7c5a6e] font-medium">
-              Meera Sakhrani
+            <div className="h-px w-8 bg-[#7a6455]" />
+            <p className="text-[11px] tracking-[0.3em] uppercase text-[#6f5c4e] font-medium">
+              Masterclass Studio
             </p>
-            <div className="h-px w-8 bg-[#7c5a6e]" />
+            <div className="h-px w-8 bg-[#7a6455]" />
           </div>
         </div>
       </div>

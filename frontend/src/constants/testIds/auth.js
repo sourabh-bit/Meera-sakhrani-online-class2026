@@ -1,4 +1,4 @@
-// Test IDs for the auth feature (login, register, password reset, logout).
+﻿// Test IDs for the auth feature (login, register, password reset, logout).
 // Add new keys here as you wire up additional auth UI; see ./index.js for
 // the recipe to add a new feature file.
 //
@@ -9,7 +9,7 @@
 //   - Reference them in JSX as `data-testid={LOGIN.submitButton}`.
 //
 // Why kebab-case values: required by qabot's CSS-attribute selector matcher
-// and the lint rule `emergent(kebab-case-testid)`.
+// and the lint rule for kebab-case test ids.
 
 export const LOGIN = {
 	emailInput: 'login-email-input',
@@ -31,3 +31,4 @@ export const REGISTER = {
 export const LOGOUT = {
 	button: 'logout-button',
 };
+

@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Header, Depends
+﻿from fastapi import FastAPI, APIRouter, HTTPException, Header, Depends
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -18,21 +18,7 @@ from datetime import datetime, timezone
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-# MongoDB connection
-mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
 
-ADMIN_PASSCODE = os.environ.get('ADMIN_PASSCODE', '')
-UPI_ID = os.environ.get('UPI_ID', '')
-UPI_PAYEE_NAME = os.environ.get('UPI_PAYEE_NAME', '')
-BOOKING_AMOUNT = int(os.environ.get('BOOKING_AMOUNT', '17700') or '17700')
-
-app = FastAPI()
-api_router = APIRouter(prefix="/api")
-
-
-# ------------------ Models ------------------
 def gen_mpm_id() -> str:
     alphabet = string.ascii_uppercase + string.digits
     return "MPM-" + "".join(secrets.choice(alphabet) for _ in range(8))
@@ -42,6 +28,97 @@ def now_utc_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
+class InMemoryInsertResult:
+    def __init__(self, inserted_id: str):
+        self.inserted_id = inserted_id
+
+
+class InMemoryUpdateResult:
+    def __init__(self, matched_count: int, modified_count: int):
+        self.matched_count = matched_count
+        self.modified_count = modified_count
+
+
+class InMemoryCursor:
+    def __init__(self, items):
+        self._items = items
+
+    def sort(self, key, direction):
+        reverse = direction < 0
+        self._items = sorted(self._items, key=lambda item: item.get(key, ""), reverse=reverse)
+        return self
+
+    async def to_list(self, length):
+        return [item.copy() for item in self._items[:length]]
+
+
+class InMemoryCollection:
+    def __init__(self):
+        self._docs = []
+
+    def _matches(self, doc, query):
+        return all(doc.get(k) == v for k, v in query.items())
+
+    def _project(self, doc, projection):
+        if not projection:
+            return doc.copy()
+        projected = doc.copy()
+        if projection.get("_id") == 0:
+            projected.pop("_id", None)
+        return projected
+
+    async def insert_one(self, doc):
+        self._docs.append(doc.copy())
+        return InMemoryInsertResult(doc.get("id", doc.get("mpm_id", "")))
+
+    async def find_one(self, query, projection=None):
+        for doc in self._docs:
+            if self._matches(doc, query):
+                return self._project(doc, projection)
+        return None
+
+    async def update_one(self, query, update):
+        for idx, doc in enumerate(self._docs):
+            if self._matches(doc, query):
+                changes = update.get("$set", {})
+                new_doc = doc.copy()
+                new_doc.update(changes)
+                self._docs[idx] = new_doc
+                return InMemoryUpdateResult(1, 1)
+        return InMemoryUpdateResult(0, 0)
+
+    def find(self, query, projection=None):
+        items = [self._project(doc, projection) for doc in self._docs if self._matches(doc, query)]
+        return InMemoryCursor(items)
+
+
+class InMemoryDB:
+    def __init__(self):
+        self.reservations = InMemoryCollection()
+
+
+# MongoDB connection or local fallback
+mongo_url = os.environ.get('MONGO_URL')
+db_name = os.environ.get('DB_NAME')
+if mongo_url and db_name:
+    client = AsyncIOMotorClient(mongo_url)
+    db = client[db_name]
+    _using_memory_db = False
+else:
+    client = None
+    db = InMemoryDB()
+    _using_memory_db = True
+
+ADMIN_PASSCODE = os.environ.get('ADMIN_PASSCODE') or 'admin'
+UPI_ID = os.environ.get('UPI_ID') or 'meerasakhranibeauty.ibz@icici'
+UPI_PAYEE_NAME = os.environ.get('UPI_PAYEE_NAME') or 'Meera Sakhrani Beauty'
+BOOKING_AMOUNT = int(os.environ.get('BOOKING_AMOUNT', '17700') or '17700')
+
+app = FastAPI()
+api_router = APIRouter(prefix="/api")
+
+
+# ------------------ Models ------------------
 class ReservationCreate(BaseModel):
     name: str
     email: EmailStr
@@ -75,7 +152,7 @@ class AdminLogin(BaseModel):
 # ------------------ Public meta ------------------
 @api_router.get("/")
 async def root():
-    return {"message": "ok"}
+    return {"message": "ok", "mode": "memory" if _using_memory_db else "mongo"}
 
 
 @api_router.get("/payment-info")
@@ -146,14 +223,14 @@ async def get_reservation(mpm_id: str):
 
 # ------------------ Admin ------------------
 def require_admin(x_admin_passcode: Optional[str] = Header(default=None)):
-    if not ADMIN_PASSCODE or not x_admin_passcode or x_admin_passcode != ADMIN_PASSCODE:
-        raise HTTPException(status_code=401, detail="Unauthorized")
+    if not x_admin_passcode or x_admin_passcode != ADMIN_PASSCODE:
+        raise HTTPException(status_code=401, detail="Invalid passcode")
     return True
 
 
 @api_router.post("/admin/login")
 async def admin_login(payload: AdminLogin):
-    if not ADMIN_PASSCODE or payload.passcode != ADMIN_PASSCODE:
+    if payload.passcode != ADMIN_PASSCODE:
         raise HTTPException(status_code=401, detail="Invalid passcode")
     return {"ok": True}
 
@@ -207,4 +284,5 @@ logger = logging.getLogger(__name__)
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
-    client.close()
+    if client:
+        client.close()

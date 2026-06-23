@@ -1,7 +1,6 @@
 import Navbar from "../components/site/Navbar";
 import Footer from "../components/site/Footer";
 import Hero from "../components/site/Hero";
-import Venue from "../components/site/Venue";
 import GlamLooks from "../components/site/GlamLooks";
 import Curriculum from "../components/site/Curriculum";
 import Masterclass from "../components/site/Masterclass";
@@ -18,10 +17,10 @@ export default function HomePage() {
       <Curriculum />
       <Masterclass />
       <Attendees />
-      <Venue />
       <Booking />
       <Footer />
       <FloatingBook />
     </div>
   );
 }
+

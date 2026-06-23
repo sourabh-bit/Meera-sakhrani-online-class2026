@@ -1,10 +1,9 @@
-/* App-specific overrides */
+﻿/* App-specific overrides */
 .App {
     min-height: 100vh;
-    background-color: #f5ede7;
+    background-color: #f7f1ea;
 }
 
-/* Smooth scroll for in-page anchors */
 html {
     scroll-behavior: smooth;
 }

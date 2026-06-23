@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Clock,
@@ -19,10 +19,10 @@ const details = [
 ];
 
 const payment = [
-  { label: "Account Number", value: "071405003337" },
-  { label: "Account Holder", value: "MEERA SAKHRANI BEAUTY" },
-  { label: "IFSC Code", value: "ICIC0000714" },
-  { label: "UPI", value: "meerasakhranibeauty.ibz@icici" },
+  { label: "Account Number", value: "Provided in backend" },
+  { label: "Account Holder", value: "Studio Account" },
+  { label: "IFSC Code", value: "Configured in backend" },
+  { label: "UPI", value: "Configured in backend" },
 ];
 
 export default function Booking() {
@@ -46,17 +46,17 @@ export default function Booking() {
       <div className="max-w-[1280px] mx-auto px-6 md:px-12">
         <div className="text-center max-w-2xl mx-auto">
           <div className="flex items-center justify-center gap-3">
-            <span className="h-px w-8 md:w-10 bg-[#c08aa0]" />
-            <p className="text-[10px] tracking-[0.32em] uppercase text-[#c08aa0] font-medium">
+            <span className="h-px w-8 md:w-10 bg-[#b79d8b]" />
+            <p className="text-[10px] tracking-[0.32em] uppercase text-[#b79d8b] font-medium">
               Secure Your Seat
             </p>
-            <span className="h-px w-8 md:w-10 bg-[#c08aa0]" />
+            <span className="h-px w-8 md:w-10 bg-[#b79d8b]" />
           </div>
           <h2
             data-testid="booking-title"
             className="mt-5 font-serif-display text-[36px] md:text-[56px] leading-[1.02] text-[#3b2f33]"
           >
-            Reserve your <span className="italic text-[#7c5a6e]">place</span>
+            Reserve your <span className="italic text-[#7a6455]">place</span>
           </h2>
           <p className="mt-5 text-[15px] md:text-[16px] leading-[1.75] text-[#5a4750]">
             A limited, intimate cohort. The fee covers the full live session,
@@ -65,14 +65,13 @@ export default function Booking() {
         </div>
 
         <div className="mt-14 md:mt-16 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-stretch max-w-5xl mx-auto">
-          {/* LEFT — At a glance details */}
           <div
             data-testid="details-card"
-            className="bg-[#efd9e0] border border-[#e3c3cd] rounded-sm p-7 md:p-9 flex flex-col"
+            className="bg-[#eee4d8] border border-[#dfd2c4] rounded-sm p-7 md:p-9 flex flex-col"
           >
             <div className="flex items-center gap-3">
-              <span className="h-px w-8 bg-[#7c5a6e]" />
-              <p className="text-[10px] tracking-[0.32em] uppercase text-[#7c5a6e] font-medium">
+              <span className="h-px w-8 bg-[#7a6455]" />
+              <p className="text-[10px] tracking-[0.32em] uppercase text-[#7a6455] font-medium">
                 At a Glance
               </p>
             </div>
@@ -86,10 +85,10 @@ export default function Booking() {
                 return (
                   <li key={d.label} className="flex items-start gap-3.5">
                     <div className="shrink-0 w-9 h-9 md:w-10 md:h-10 flex items-center justify-center bg-[#f5ede7] rounded-sm">
-                      <Icon size={15} className="text-[#7c5a6e]" />
+                      <Icon size={15} className="text-[#7a6455]" />
                     </div>
                     <div className="min-w-0">
-                      <p className="text-[9.5px] tracking-[0.28em] uppercase text-[#7c5a6e] font-semibold">
+                      <p className="text-[9.5px] tracking-[0.28em] uppercase text-[#7a6455] font-semibold">
                         {d.label}
                       </p>
                       <p className="mt-1 font-serif-body text-[17px] md:text-[19px] text-[#3b2f33] leading-snug">
@@ -102,7 +101,6 @@ export default function Booking() {
             </ul>
           </div>
 
-          {/* RIGHT — Compact booking card */}
           <div
             data-testid="booking-card"
             className="relative bg-[#f1e2d8] border border-[#e3d2c8] rounded-sm p-7 md:p-9 flex flex-col items-center text-center overflow-hidden"
@@ -112,14 +110,14 @@ export default function Booking() {
               backgroundSize: "20px 20px",
             }}
           >
-            <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#efd9e0] flex items-center justify-center">
-              <Landmark size={20} className="text-[#7c5a6e]" />
+            <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#eee4d8] flex items-center justify-center">
+              <Landmark size={20} className="text-[#7a6455]" />
             </div>
 
             <p className="mt-4 text-[10px] md:text-[11px] tracking-[0.36em] uppercase text-[#3b2f33]/80 font-medium">
               Booking Amount
             </p>
-            <p className="mt-2.5 font-serif-display text-[36px] md:text-[44px] leading-[0.95] text-[#7c5a6e] tracking-[-0.01em]">
+            <p className="mt-2.5 font-serif-display text-[36px] md:text-[44px] leading-[0.95] text-[#7a6455] tracking-[-0.01em]">
               INR <span className="font-semibold">17,700</span>
             </p>
             <p className="mt-1.5 font-serif-body italic text-[14px] md:text-[15px] text-[#5a4750]">
@@ -129,22 +127,21 @@ export default function Booking() {
             <button
               data-testid="pay-securely-btn"
               onClick={() => navigate("/checkout")}
-              className="mt-6 w-full max-w-xs px-8 py-3.5 rounded-full bg-[#7c5a6e] text-[#f5ede7] text-[11px] tracking-[0.32em] uppercase font-semibold hover:bg-[#5d4254] transition-all shadow-[0_12px_28px_-14px_rgba(124,90,110,0.55)]"
+              className="mt-6 w-full max-w-xs px-8 py-3.5 rounded-full bg-[#7a6455] text-[#f5ede7] text-[11px] tracking-[0.32em] uppercase font-semibold hover:bg-[#5b4a40] transition-all shadow-[0_12px_28px_-14px_rgba(124,90,110,0.55)]"
             >
               Pay Securely
             </button>
 
-            <p className="mt-4 text-[11px] md:text-[12px] tracking-[0.04em] text-[#5a4750]">
+            <p className="mt-4 text-[11px] md:text-[12px] tracking-[0.04em] text-[#5a4750] font-sans not-italic">
               Instant confirmation · Limited seats
             </p>
 
-            {/* collapsible bank details */}
             <button
               data-testid="toggle-bank-details"
               onClick={() => setOpenBank((o) => !o)}
-              className="mt-5 w-full flex items-center justify-center gap-1.5 text-[10px] tracking-[0.3em] uppercase text-[#7c5a6e] font-semibold hover:text-[#5d4254] transition-colors"
+              className="mt-5 w-full flex items-center justify-center gap-1.5 text-[10px] tracking-[0.3em] uppercase text-[#7a6455] font-semibold hover:text-[#5b4a40] transition-colors"
             >
-              {openBank ? "Hide bank details" : "Show bank · UPI details"}
+              {openBank ? "Hide payment details" : "Show payment details"}
               <ChevronDown
                 size={12}
                 className={`transition-transform duration-300 ${
@@ -159,12 +156,9 @@ export default function Booking() {
             >
               <ul className="space-y-3 text-left bg-[#f5ede7] border border-[#e3d2c8] rounded-sm p-4">
                 {payment.map((p) => (
-                  <li
-                    key={p.label}
-                    className="flex items-start justify-between gap-3"
-                  >
+                  <li key={p.label} className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
-                      <p className="text-[9px] tracking-[0.26em] uppercase text-[#7c5a6e]/85 font-semibold">
+                      <p className="text-[9px] tracking-[0.26em] uppercase text-[#7a6455]/85 font-semibold">
                         {p.label}
                       </p>
                       <p className="mt-0.5 font-serif-body text-[14px] md:text-[15px] text-[#3b2f33] break-all leading-snug">
@@ -175,13 +169,9 @@ export default function Booking() {
                       data-testid={`copy-${p.label.toLowerCase().replace(/\s+/g, "-")}`}
                       onClick={() => copy(p.label, p.value)}
                       aria-label={`Copy ${p.label}`}
-                      className="shrink-0 w-8 h-8 rounded-full border border-[#7c5a6e]/30 flex items-center justify-center text-[#7c5a6e] hover:bg-[#7c5a6e] hover:text-[#f5ede7] hover:border-[#7c5a6e] transition-all"
+                      className="shrink-0 w-8 h-8 rounded-full border border-[#7a6455]/30 flex items-center justify-center text-[#7a6455] hover:bg-[#7a6455] hover:text-[#f5ede7] hover:border-[#7a6455] transition-all"
                     >
-                      {copied === p.label ? (
-                        <Check size={12} />
-                      ) : (
-                        <Copy size={12} />
-                      )}
+                      {copied === p.label ? <Check size={12} /> : <Copy size={12} />}
                     </button>
                   </li>
                 ))}

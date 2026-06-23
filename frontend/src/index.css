@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -9,7 +9,7 @@ body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: #f5ede7;
+    background-color: #f7f1ea;
     color: #2d2326;
 }
 
@@ -27,26 +27,25 @@ body {
 
 @layer base {
     :root {
-        /* Beige / cream / dusty rose palette */
-        --background: 18 36% 93%;        /* #f5ede7 */
-        --foreground: 340 8% 16%;        /* deep aubergine-brown */
-        --card: 22 40% 96%;
+        --background: 35 36% 95%;
+        --foreground: 340 8% 16%;
+        --card: 35 36% 97%;
         --card-foreground: 340 8% 16%;
-        --popover: 22 40% 96%;
+        --popover: 35 36% 97%;
         --popover-foreground: 340 8% 16%;
-        --primary: 326 18% 35%;          /* mauve plum */
-        --primary-foreground: 22 40% 96%;
-        --secondary: 20 28% 88%;
+        --primary: 28 18% 34%;
+        --primary-foreground: 35 36% 97%;
+        --secondary: 30 20% 90%;
         --secondary-foreground: 340 8% 16%;
-        --muted: 20 28% 88%;
+        --muted: 30 20% 90%;
         --muted-foreground: 340 6% 38%;
-        --accent: 340 30% 78%;           /* dusty pink */
+        --accent: 28 18% 84%;
         --accent-foreground: 340 8% 16%;
         --destructive: 0 72% 50%;
         --destructive-foreground: 0 0% 98%;
-        --border: 20 20% 82%;
-        --input: 20 20% 82%;
-        --ring: 326 18% 35%;
+        --border: 27 18% 82%;
+        --input: 27 18% 82%;
+        --ring: 28 18% 34%;
         --radius: 0.75rem;
     }
 }
@@ -60,7 +59,6 @@ body {
     }
 }
 
-/* Soft fade animation */
 @keyframes fadeUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
@@ -69,11 +67,10 @@ body {
     animation: fadeUp 0.9s ease-out both;
 }
 
-/* Magazine cover styling */
 .magazine-shadow {
     box-shadow:
-        0 30px 80px -20px rgba(124, 90, 110, 0.25),
-        0 10px 30px -10px rgba(45, 35, 38, 0.15);
+        0 30px 80px -20px rgba(124, 90, 110, 0.18),
+        0 10px 30px -10px rgba(45, 35, 38, 0.12);
 }
 
 .divider-thin {
@@ -82,39 +79,7 @@ body {
     background-color: rgba(45, 35, 38, 0.45);
 }
 
-/* selection */
 ::selection {
-    background: #c89cae;
+    background: #d7c5b5;
     color: #2d2326;
-}
-
-@layer base {
-    [data-debug-wrapper="true"] {
-        display: contents !important;
-    }
-    [data-debug-wrapper="true"] > * {
-        margin-left: inherit;
-        margin-right: inherit;
-        margin-top: inherit;
-        margin-bottom: inherit;
-        padding-left: inherit;
-        padding-right: inherit;
-        padding-top: inherit;
-        padding-bottom: inherit;
-        column-gap: inherit;
-        row-gap: inherit;
-        gap: inherit;
-        border-left-width: inherit;
-        border-right-width: inherit;
-        border-top-width: inherit;
-        border-bottom-width: inherit;
-        border-left-style: inherit;
-        border-right-style: inherit;
-        border-top-style: inherit;
-        border-bottom-style: inherit;
-        border-left-color: inherit;
-        border-right-color: inherit;
-        border-top-color: inherit;
-        border-bottom-color: inherit;
-    }
 }
