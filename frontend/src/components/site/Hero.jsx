@@ -46,14 +46,10 @@ export default function Hero() {
           </div>
 
           <div className="fade-up order-2 lg:order-1 text-center lg:text-left">
-            <div className="flex items-center justify-center lg:justify-start gap-3">
-              <span className="h-px w-8 bg-[#b79d8b]" />
-              <p
-                data-testid="hero-eyebrow"
-                className="text-[10px] md:text-[11px] tracking-[0.32em] uppercase text-[#8a7b71] font-medium"
-              >
-                Online Masterclass
-              </p>
+            <div className="hero-pill mt-4 inline-flex items-center gap-2 rounded-full border border-[#7a6455]/20 bg-[#f7efea] px-4 py-2 shadow-[0_8px_24px_rgba(122,100,85,0.08)]">
+              <span className="text-[9px] md:text-[10px] tracking-[0.28em] uppercase text-[#3b2f33] font-semibold">
+                One Day Masterclass - 5th July
+              </span>
             </div>
 
             <h1 data-testid="hero-title" className="mt-8 md:mt-10">
@@ -73,7 +69,7 @@ export default function Hero() {
             </h1>
 
             <p className="mt-8 md:mt-10 font-serif-body italic text-[20px] md:text-[26px] text-[#3b2f33]">
-              Online Masterclass - LIVE
+              One Day Masterclass - 5th July
             </p>
 
             <p className="mt-4 text-[15px] md:text-[16.5px] leading-[1.75] text-[#5a4750] max-w-md mx-auto lg:mx-0">

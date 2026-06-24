@@ -63,6 +63,16 @@ export default function Booking() {
                   The <span className="italic">details</span>
                 </h3>
 
+                <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#7a6455]/20 bg-[#f7efea] px-4 py-2 shadow-[0_8px_24px_rgba(122,100,85,0.08)]">
+                  <span className="text-[9px] md:text-[10px] tracking-[0.28em] uppercase text-[#3b2f33] font-semibold">
+                    Masterclass on 5th July
+                  </span>
+                  <span className="h-1 w-1 rounded-full bg-[#b79d8b]" />
+                  <span className="text-[9px] md:text-[10px] tracking-[0.28em] uppercase text-[#7a6455] font-semibold">
+                    One Day Master Class
+                  </span>
+                </div>
+
                 <ul className="mt-7 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
                   {details.map((d) => {
                     const Icon = d.icon;
