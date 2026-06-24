@@ -106,6 +106,8 @@ export default function CheckoutPage() {
       if (!r.ok) throw new Error(data.detail || "Failed");
       setReservation(data);
       setStep(STEPS.DONE);
+      const whatsappMessage = `Hi Ms Art. this is ${form.name}. I have paid this is my screenshot. UTR id ${utr}.`;
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMessage)}`, "_blank", "noopener,noreferrer");
     } catch (e) {
       setErr(e.message);
     } finally {
@@ -312,9 +314,9 @@ export default function CheckoutPage() {
                     <div className="aspect-square animate-pulse bg-[#f5ede7]" />
                   )}
                 </div>
-                <p className="mt-5 text-[12px] tracking-[0.05em] text-[#5a4750] font-sans not-italic">
-                  After paying, send the screenshot on WhatsApp to MS Art.
-                </p>
+                <div className="mt-5 rounded-lg border border-[#7a6455]/20 bg-[#7a6455]/10 px-4 py-3 text-center shadow-[0_8px_24px_rgba(122,100,85,0.08)]">
+                  <p className="text-[11px] md:text-[12px] font-semibold tracking-[0.14em] uppercase text-[#3b2f33]">After paying, send the screenshot on WhatsApp to MS Art.</p>
+                </div>
                 {paymentInfo?.upi_uri && (
                   <a
                     data-testid="upi-app-link"
@@ -327,14 +329,14 @@ export default function CheckoutPage() {
               </div>
 
               {/* UPI ID + UTR */}
-              <div className="bg-white/70 border border-[#e3d2c8] rounded-sm p-6 md:p-9">
-                <p className="text-[10px] tracking-[0.32em] uppercase text-[#7a6455] font-semibold">
+              <div className="rounded-xl border border-[#7a6455]/20 bg-[#f7efea] p-6 md:p-9 shadow-[0_10px_28px_rgba(122,100,85,0.08)]">
+                <p className="inline-flex rounded-full bg-[#7a6455] px-3 py-1 text-[10px] tracking-[0.32em] uppercase text-[#f5ede7] font-semibold">
                   Or pay to this UPI ID
                 </p>
-                <div className="mt-3 flex items-start justify-between gap-3">
+                <div className="mt-4 flex items-start justify-between gap-3 rounded-lg border border-[#e4d5ca] bg-white px-4 py-4">
                   <p
                     data-testid="upi-id-text"
-                    className="font-serif-body text-[18px] md:text-[20px] text-[#3b2f33] break-all"
+                    className="font-serif-body text-[18px] md:text-[20px] text-[#3b2f33] break-all font-semibold"
                   >
                     {paymentInfo?.upi_id || "-"}
                   </p>
@@ -343,7 +345,7 @@ export default function CheckoutPage() {
                       onClick={() => copy("upi", paymentInfo.upi_id)}
                       data-testid="copy-upi-id"
                       aria-label="Copy UPI ID"
-                      className="shrink-0 w-9 h-9 rounded-full border border-[#7a6455]/30 flex items-center justify-center text-[#7a6455] hover:bg-[#7a6455] hover:text-[#f5ede7] hover:border-[#7a6455] transition-all"
+                      className="shrink-0 w-10 h-10 rounded-full border border-[#7a6455]/30 bg-[#f7efea] flex items-center justify-center text-[#7a6455] hover:bg-[#7a6455] hover:text-[#f5ede7] hover:border-[#7a6455] transition-all"
                     >
                       {copied === "upi" ? <Check size={13} /> : <Copy size={13} />}
                     </button>
@@ -351,18 +353,19 @@ export default function CheckoutPage() {
                 </div>
 
                 <div className="mt-6 p-4 bg-[#eee4d8]/60 border border-[#dfd2c4] rounded-sm text-[12px] text-[#5a4750] leading-relaxed">
-                  Reservation ID:{" "}
+                  Reservation ID: {" "}
                   <span className="font-semibold text-[#3b2f33]">
                     {reservation?.mpm_id}
                   </span>
                   <br />
-                  After paying, enter your{" "}
+                  After paying, enter your {" "}
                   <span className="italic">UTR / reference number</span> below
-                  and click{" "}
+                  and click {" "}
                   <span className="font-semibold">&ldquo;I Have Paid&rdquo;</span>.
                 </div>
 
                 <form onSubmit={onClaim} className="mt-6">
+
                   <label className="text-[10px] tracking-[0.32em] uppercase text-[#7a6455] font-semibold">
                     UTR / Reference No.
                   </label>

@@ -1,11 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { Clock, Hourglass, Wallet, Wifi, Landmark } from "lucide-react";
 
+const WHATSAPP_NUMBER = "919818793850";
+const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi MS Art, I need help with the masterclass booking.")}`;
+
 const details = [
   { icon: Clock, label: "Time", value: "12:00 - 06:00 PM IST" },
   { icon: Hourglass, label: "Duration", value: "6 Hours" },
-  { icon: Wallet, label: "Fee", value: "INR 12,000 + GST" },
-  { icon: Wifi, label: "Mode", value: "Online / LIVE" },
+  { icon: Wallet, label: "Fee", value: "INR 12,711 + GST" },
+  { icon: Wifi, label: "Mode", value: "Online / Zoom" },
 ];
 
 export default function Booking() {
@@ -80,6 +83,21 @@ export default function Booking() {
                     );
                   })}
                 </ul>
+
+                <div className="mt-10 md:mt-12 rounded-lg border border-[#7a6455]/20 bg-[#f7efea] px-4 py-4 shadow-[0_8px_24px_rgba(122,100,85,0.08)]">
+                  <p className="text-[10px] tracking-[0.28em] uppercase text-[#7a6455] font-semibold">
+                    For any queries or assistance, please contact:
+                  </p>
+                  <a
+                    href={WHATSAPP_LINK}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-2 inline-flex items-center gap-2 text-[15px] md:text-[16px] font-semibold text-[#3b2f33] hover:text-[#7a6455] transition-colors"
+                  >
+                    <span aria-hidden="true">{String.fromCodePoint(0x1F4DE)}</span>
+                    <span>+91 9818793850</span>
+                  </a>
+                </div>
               </div>
 
               <div className="bg-[#eee4d8] border border-[#dfd2c4] rounded-sm p-6 md:p-8 text-center flex flex-col items-center justify-center min-h-full">
@@ -94,7 +112,7 @@ export default function Booking() {
                   12711 + gst = 15000
                 </p>
                 <p className="mt-2 text-[12px] md:text-[13px] text-[#5a4750]">
-                  Base fee INR 12,711 + gst = 15000
+                  Base fee INR 12,711 + GST = 15000
                 </p>
                 <p className="mt-2 font-serif-body italic text-[14px] md:text-[15px] text-[#5a4750]">
                   To secure your seat
