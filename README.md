@@ -1,25 +1,35 @@
 # Deployment
 
-This repo is ready for Render as a two-service app:
+This repo now uses:
 
-1. `meera-masterclass-api` is the FastAPI backend.
-2. `meera-masterclass-web` is the React frontend static site.
+- `Render` for the FastAPI backend
+- `Vercel` for the React frontend
 
-## Deploy on Render
+## Backend on Render
 
-1. Push this repo to GitHub.
-2. In Render, create a new Blueprint and point it at the repo.
-3. Let Render create both services from [`render.yaml`](./render.yaml).
-4. Render will set `REACT_APP_BACKEND_URL` on the frontend and `CORS_ORIGINS` on the backend for you.
-5. After the first deploy, confirm both services are healthy and the frontend can reach the backend.
+1. Create a Render Web Service from the `backend` folder.
+2. Build command: `pip install -r requirements.txt`
+3. Start command: `uvicorn server:app --host 0.0.0.0 --port $PORT`
+4. Add these environment variables:
+   - `ADMIN_PASSCODE`
+   - `UPI_ID`
+   - `UPI_PAYEE_NAME`
+   - `BOOKING_AMOUNT`
+   - `MONGO_URL`
+   - `DB_NAME`
+   - `CORS_ORIGINS` with your Vercel production URL, for example `https://meera-masterclass-web.vercel.app`
 
-## Important settings
+If you want preview deployments to work too, set:
 
-- Backend start command: `uvicorn server:app --host 0.0.0.0 --port $PORT`
-- Frontend build command: `yarn install --frozen-lockfile && yarn build`
-- Frontend SPA routing: Render rewrites all paths to `/index.html`
+- `CORS_ORIGIN_REGEX = https://.*\.vercel\.app`
 
-## Local dev
+## Frontend on Vercel
 
-- Backend: run FastAPI from `backend/server.py`
-- Frontend: run the CRA app from `frontend`
+1. Create a Vercel project from the `frontend` folder.
+2. Set this environment variable in Vercel:
+   - `REACT_APP_BACKEND_URL` = your Render backend URL, for example `https://meera-sakhrani-online-class2026.onrender.com`
+3. Redeploy after setting the environment variable, because CRA reads it at build time.
+
+## SPA routing
+
+The frontend has a Vercel rewrite so routes like `/admin` load the app first and then React Router handles them.

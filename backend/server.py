@@ -291,10 +291,15 @@ def _get_cors_origins():
     ]
 
 
+def _get_cors_origin_regex():
+    return os.environ.get("CORS_ORIGIN_REGEX") or r"https://.*\.vercel\.app"
+
+
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=False,
     allow_origins=_get_cors_origins(),
+    allow_origin_regex=_get_cors_origin_regex(),
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -309,4 +314,6 @@ logger = logging.getLogger(__name__)
 async def shutdown_db_client():
     if client:
         client.close()
+
+
 
