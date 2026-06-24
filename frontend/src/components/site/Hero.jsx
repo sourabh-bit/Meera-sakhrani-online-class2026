@@ -1,9 +1,5 @@
-﻿import { heroImage } from "../../data/content";
+import { heroImage } from "../../data/content";
 import { useNavigate } from "react-router-dom";
-
-// Free-stock looping beauty video; replace with your own URL when ready.
-const HERO_VIDEO_URL =
-  "https://videos.pexels.com/video-files/8074200/8074200-uhd_2160_4096_25fps.mp4";
 
 export default function Hero() {
   const navigate = useNavigate();
@@ -23,23 +19,17 @@ export default function Hero() {
               data-testid="hero-image"
               className="relative aspect-[3/4] w-full max-w-[460px] mx-auto magazine-shadow rounded-[2px] overflow-hidden bg-[#e8ddd5]"
             >
-              <video
-                data-testid="hero-video"
-                autoPlay
-                loop
-                muted
-                playsInline
-                poster={heroImage}
-                preload="metadata"
+                                          <div className="absolute top-8 left-1/2 -translate-x-1/2 z-10 pointer-events-none px-2 text-center w-full max-w-[96%]">
+                <p className="font-serif-display whitespace-nowrap uppercase text-white text-[14px] sm:text-[16px] md:text-[18px] lg:text-[20px] leading-none font-normal tracking-[0.16em] drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)]">
+                  THE FUTURE OF MAKEUP
+                </p>
+              </div>
+              <img
+                data-testid="hero-image-img"
+                src={heroImage}
+                alt="Signature glam look from the masterclass"
                 className="absolute inset-0 w-full h-full object-cover"
-              >
-                <source src={HERO_VIDEO_URL} type="video/mp4" />
-                <img
-                  src={heroImage}
-                  alt="Signature glam look from the masterclass"
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-              </video>
+              />
             </div>
 
             <div
@@ -116,4 +106,10 @@ export default function Hero() {
     </section>
   );
 }
+
+
+
+
+
+
 

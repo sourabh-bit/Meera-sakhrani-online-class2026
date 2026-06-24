@@ -1,3 +1,5 @@
+import { Sparkles } from "lucide-react";
+
 const attendees = [
   "Aspiring & professional makeup artists wanting to master Meera's signature glam look.",
   "Artists who've completed basic courses but want to refine luminous, skin-like glam finishes.",
@@ -49,6 +51,23 @@ export default function Attendees() {
               </li>
             ))}
           </ul>
+        </div>
+
+        <div className="mt-14 md:mt-16 rounded-sm border border-[#e3d2c8] bg-[#f6eee7] px-6 py-6 md:px-8 md:py-7 shadow-[0_18px_42px_-32px_rgba(124,90,110,0.28)]">
+          <div className="flex flex-col md:flex-row md:items-center gap-5 md:gap-8">
+            <div className="shrink-0 w-20 h-20 md:w-24 md:h-24 rounded-full bg-[#efe1d6] flex items-center justify-center mx-auto md:mx-0 border border-[#ead7cb]">
+              <Sparkles size={28} className="text-[#b88aa4]" />
+            </div>
+            <div className="min-w-0">
+              <p className="font-serif-display italic text-[24px] md:text-[34px] leading-tight text-[#7c5a6e] text-center md:text-left">
+                Arrive with an open mind.
+              </p>
+              <p className="mt-3 text-[14.5px] md:text-[16px] leading-[1.8] text-[#5a4750] text-center md:text-left max-w-4xl">
+                Set aside previous techniques and assumptions, and experience
+                Meera's signature approach from a fresh perspective. <span className="font-semibold text-[#3b2f33]">If you really want to master this art.</span>
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>

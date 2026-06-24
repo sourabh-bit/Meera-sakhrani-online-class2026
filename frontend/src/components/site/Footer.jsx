@@ -1,4 +1,4 @@
-﻿import { Instagram, Mail } from "lucide-react";
+import { Instagram, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const EMAIL = "meerasakhranibeauty@gmail.com";
@@ -77,10 +77,10 @@ export default function Footer() {
       <div className="border-t border-[#e3d2c8]">
         <div className="max-w-[1280px] mx-auto px-6 md:px-12 py-6 flex flex-col md:flex-row items-center justify-between gap-3">
           <p className="text-[10px] md:text-[11px] tracking-[0.28em] uppercase text-[#8a7480] text-center">
-            © 2026 Meera Sakhrani
+            Copyright 2026 Meera Sakhrani
           </p>
           <p className="text-[10px] md:text-[11px] tracking-[0.28em] uppercase text-[#8a7480] text-center">
-            Crafted with intention · New Delhi, India
+            Crafted with intention - New Delhi, India
           </p>
         </div>
       </div>

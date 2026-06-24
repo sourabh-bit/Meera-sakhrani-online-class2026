@@ -38,7 +38,7 @@ export default function Venue() {
             The Venue
           </h2>
           <p className="mt-5 text-[15px] md:text-[16.5px] text-[#5a4750] max-w-xl mx-auto leading-[1.7]">
-            Experience luxury at The Maidens Oberoi — one of Delhi&apos;s most
+            Experience luxury at The Maidens Oberoi - one of Delhi&apos;s most
             iconic heritage hotels.
           </p>
         </div>

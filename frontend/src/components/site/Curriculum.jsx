@@ -1,4 +1,4 @@
-﻿export default function Curriculum() {
+export default function Curriculum() {
   return (
     <section
       id="curriculum-section"
@@ -21,7 +21,7 @@
               What you will <span className="italic text-[#6f5c4e]">learn</span>
             </h2>
             <p className="mt-6 text-[15px] leading-[1.7] text-[#5a4750] max-w-sm mx-auto lg:mx-0">
-              Two focused chapters · taught on real skin · designed to recreate the signature glam look end to end.
+              Two focused chapters - taught on real skin - designed to recreate the signature glam look end to end.
             </p>
           </div>
 
@@ -55,7 +55,7 @@
                 The Glam Architecture
               </p>
               <h3 className="mt-3 font-serif-display text-[26px] md:text-[30px] leading-[1.15] text-[#3b2f33] max-w-md">
-                Sculpt · Eye · Lip · Finish
+                Sculpt / Eye / Lip / Finish
               </h3>
               <p className="mt-4 text-[14.5px] leading-[1.7] text-[#5a4750] max-w-md">
                 Sculpting, signature eye work, blush placement, the luxe lip and the editorial finishing that pulls the signature glam together.

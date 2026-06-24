@@ -14,7 +14,7 @@ export default function GlamLooks() {
           <div className="flex items-center gap-3">
             <span className="h-px w-8 md:w-10 bg-[#c08aa0]" />
             <p className="text-[10px] md:text-[11px] tracking-[0.32em] uppercase text-[#c08aa0] font-medium">
-              Recent Work
+              Signature glam looks
             </p>
           </div>
 
@@ -60,3 +60,4 @@ export default function GlamLooks() {
     </section>
   );
 }
+

@@ -1,4 +1,4 @@
-﻿from fastapi import FastAPI, APIRouter, HTTPException, Header, Depends
+from fastapi import FastAPI, APIRouter, HTTPException, Header, Depends
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -112,7 +112,7 @@ else:
 ADMIN_PASSCODE = os.environ.get('ADMIN_PASSCODE') or 'admin'
 UPI_ID = os.environ.get('UPI_ID') or 'meerasakhranibeauty.ibz@icici'
 UPI_PAYEE_NAME = os.environ.get('UPI_PAYEE_NAME') or 'Meera Sakhrani Beauty'
-BOOKING_AMOUNT = int(os.environ.get('BOOKING_AMOUNT', '17700') or '17700')
+BOOKING_AMOUNT = int(os.environ.get('BOOKING_AMOUNT', '15000') or '15000')
 
 app = FastAPI()
 api_router = APIRouter(prefix="/api")
@@ -123,6 +123,8 @@ class ReservationCreate(BaseModel):
     name: str
     email: EmailStr
     phone: str
+    gst_number: Optional[str] = None
+    pan_number: Optional[str] = None
 
 
 class ReservationClaimPaid(BaseModel):
@@ -137,6 +139,8 @@ class Reservation(BaseModel):
     name: str
     email: str
     phone: str
+    gst_number: Optional[str] = None
+    pan_number: Optional[str] = None
     amount: int = BOOKING_AMOUNT
     status: Literal["pending", "approved", "rejected"] = "pending"
     utr: Optional[str] = None
@@ -183,12 +187,18 @@ async def payment_info():
 async def create_reservation(payload: ReservationCreate):
     name = payload.name.strip()
     phone = payload.phone.strip()
+    gst_number = payload.gst_number.strip() if payload.gst_number else None
+    pan_number = payload.pan_number.strip().upper() if payload.pan_number else None
     if not name:
         raise HTTPException(status_code=400, detail="Name required")
     if not re.match(r"^[+\d][\d\s\-()+]{6,19}$", phone):
         raise HTTPException(status_code=400, detail="Invalid phone")
+    if gst_number and not re.match(r"^[0-9A-Z]{15}$", gst_number.upper()):
+        raise HTTPException(status_code=400, detail="Invalid GST number")
+    if pan_number and not re.match(r"^[A-Z]{5}[0-9]{4}[A-Z]{1}$", pan_number.upper()):
+        raise HTTPException(status_code=400, detail="Invalid PAN number")
 
-    obj = Reservation(name=name, email=str(payload.email).strip().lower(), phone=phone)
+    obj = Reservation(name=name, email=str(payload.email).strip().lower(), phone=phone, gst_number=gst_number, pan_number=pan_number)
     doc = obj.model_dump()
     await db.reservations.insert_one(doc)
     return obj
@@ -267,14 +277,27 @@ async def admin_reject(mpm_id: str, _: bool = Depends(require_admin)):
 # ------------------ App wiring ------------------
 app.include_router(api_router)
 
+def _get_cors_origins():
+    raw = os.environ.get("CORS_ORIGINS")
+    if raw:
+        origins = [origin.strip() for origin in raw.split(",") if origin.strip()]
+        if origins:
+            return origins
+    return [
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ]
+
+
 app.add_middleware(
     CORSMiddleware,
-    allow_credentials=True,
-    allow_origins=os.environ.get('CORS_ORIGINS', '*').split(','),
+    allow_credentials=False,
+    allow_origins=_get_cors_origins(),
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
@@ -286,3 +309,4 @@ logger = logging.getLogger(__name__)
 async def shutdown_db_client():
     if client:
         client.close()
+

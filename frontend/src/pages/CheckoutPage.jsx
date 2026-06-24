@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import {
@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 
 const API = (process.env.REACT_APP_BACKEND_URL || "http://localhost:8000") + "/api";
+const WHATSAPP_NUMBER = "919818793850";
+const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi MS Art, I have paid and shared the screenshot.")}`;
 
 async function readJsonResponse(response) {
   const text = await response.text();
@@ -31,7 +33,7 @@ export default function CheckoutPage() {
   const [err, setErr] = useState(null);
   const [copied, setCopied] = useState(null);
 
-  const [form, setForm] = useState({ name: "", email: "", phone: "" });
+  const [form, setForm] = useState({ name: "", email: "", phone: "", gst_number: "", pan_number: "" });
   const [reservation, setReservation] = useState(null);
   const [paymentInfo, setPaymentInfo] = useState(null);
   const [utr, setUtr] = useState("");
@@ -211,18 +213,18 @@ export default function CheckoutPage() {
 
         <p className="mt-3 md:mt-4 text-center text-[14px] md:text-[16px] text-[#5a4750] max-w-xl mx-auto px-2">
           {step === STEPS.FORM &&
-            "Tell us a little about you — we'll send your confirmation here."}
+            "Tell us a little about you - we'll send your confirmation here."}
           {step === STEPS.PAY &&
             "Scan the QR or use the UPI ID below. Then enter your UTR / reference number."}
           {step === STEPS.DONE &&
             reservation?.status === "approved" &&
-            "Your payment has been verified. Welcome to the masterclass — see you on the day."}
+            "Your payment has been verified. Welcome to the masterclass - see you on the day."}
           {step === STEPS.DONE &&
             reservation?.status === "rejected" &&
             "We could not verify this payment. Please contact support with your reservation ID."}
           {step === STEPS.DONE &&
             (!reservation?.status || reservation?.status === "pending") &&
-            "Thanks — your payment is being verified. This page will update once our team confirms."}
+            "Thanks - your payment is being verified. This page will update once our team confirms."}
         </p>
 
         <div className="mt-10 md:mt-14">
@@ -233,9 +235,11 @@ export default function CheckoutPage() {
               className="max-w-xl mx-auto bg-white/60 border border-[#e3d2c8] rounded-sm p-7 md:p-9 space-y-5"
             >
               {[
-                { k: "name", label: "Full Name", type: "text", placeholder: "Your name" },
-                { k: "email", label: "Email", type: "email", placeholder: "you@email.com" },
-                { k: "phone", label: "Phone", type: "tel", placeholder: "+91 9XXXXXXXXX" },
+                { k: "name", label: "Full Name", type: "text", placeholder: "Your name", required: true },
+                { k: "email", label: "Email", type: "email", placeholder: "you@email.com", required: true },
+                { k: "phone", label: "Phone", type: "tel", placeholder: "+91 9XXXXXXXXX", required: true },
+                { k: "gst_number", label: "GST Number (Optional)", type: "text", placeholder: "15-digit GST number", required: false },
+                { k: "pan_number", label: "PAN Number (Optional)", type: "text", placeholder: "ABCDE1234F", required: false },
               ].map((f) => (
                 <div key={f.k}>
                   <label className="text-[10px] tracking-[0.32em] uppercase text-[#7a6455] font-semibold">
@@ -244,21 +248,24 @@ export default function CheckoutPage() {
                   <input
                     data-testid={`field-${f.k}`}
                     type={f.type}
-                    required
+                    required={f.required}
                     placeholder={f.placeholder}
                     value={form[f.k]}
                     onChange={(e) => setForm({ ...form, [f.k]: e.target.value })}
-                    className="mt-2 w-full bg-transparent border-b border-[#3b2f33]/30 focus:border-[#7a6455] outline-none py-2.5 font-serif-body text-[18px] md:text-[20px] text-[#3b2f33] placeholder:text-[#9b8a7c] transition-colors"
+                    className="mt-2 w-full bg-transparent border-b border-[#3b2f33]/30 focus:border-[#7a6455] outline-none py-2.5 font-serif-body text-[18px] md:text-[20px] text-[#3b2f33] placeholder:text-[#9b8a7c] transition-colors uppercase tracking-[0.08em]"
                   />
                 </div>
               ))}
 
-              <div className="pt-2 flex items-center justify-between text-[14px]">
+              <div className="pt-2 space-y-2 text-[14px]">
                 <p className="text-[#5a4750]">
                   Booking amount:{" "}
                   <span className="font-serif-display text-[20px] text-[#7a6455]">
-                    INR 17,700
+                    12711 + gst = 15000
                   </span>
+                </p>
+                <p className="text-[12px] md:text-[13px] text-[#5a4750]">
+                  Base fee INR 12,711 + gst = 15000
                 </p>
               </div>
 
@@ -291,7 +298,7 @@ export default function CheckoutPage() {
                   Scan to Pay
                 </p>
                 <h3 className="mt-2 font-serif-display text-[26px] md:text-[30px] text-[#3b2f33]">
-                  INR <span className="font-semibold">17,700</span>
+                  12711 + gst = 15000
                 </h3>
                 <div className="mt-5 mx-auto w-[260px] max-w-full bg-white p-3 rounded-sm border border-[#e3d2c8]">
                   {paymentInfo?.qr_url ? (
@@ -306,7 +313,7 @@ export default function CheckoutPage() {
                   )}
                 </div>
                 <p className="mt-5 text-[12px] tracking-[0.05em] text-[#5a4750] font-sans not-italic">
-                  Open any UPI app · GPay · PhonePe · Paytm · BHIM
+                  After paying, send the screenshot on WhatsApp to MS Art.
                 </p>
                 {paymentInfo?.upi_uri && (
                   <a
@@ -329,7 +336,7 @@ export default function CheckoutPage() {
                     data-testid="upi-id-text"
                     className="font-serif-body text-[18px] md:text-[20px] text-[#3b2f33] break-all"
                   >
-                    {paymentInfo?.upi_id || "—"}
+                    {paymentInfo?.upi_id || "-"}
                   </p>
                   {paymentInfo?.upi_id && (
                     <button
@@ -366,7 +373,7 @@ export default function CheckoutPage() {
                     placeholder="e.g. 234567890123"
                     value={utr}
                     onChange={(e) => setUtr(e.target.value)}
-                    className="mt-2 w-full bg-transparent border-b border-[#3b2f33]/30 focus:border-[#7a6455] outline-none py-2.5 font-serif-body text-[18px] md:text-[20px] text-[#3b2f33] placeholder:text-[#9b8a7c] transition-colors"
+                    className="mt-2 w-full bg-transparent border-b border-[#3b2f33]/30 focus:border-[#7a6455] outline-none py-2.5 font-serif-body text-[18px] md:text-[20px] text-[#3b2f33] placeholder:text-[#9b8a7c] transition-colors uppercase tracking-[0.08em]"
                   />
                   {err && (
                     <p className="mt-3 text-[13px] text-red-700">{err}</p>
@@ -476,15 +483,33 @@ export default function CheckoutPage() {
             </div>
           )}
         </div>
+        <a
+          href={WHATSAPP_URL}
+          target="_blank"
+          rel="noreferrer"
+          data-testid="whatsapp-chat-btn"
+          aria-label="Chat with MS Art on WhatsApp"
+          className="fixed bottom-5 right-5 z-50 inline-flex h-11 w-11 items-center justify-center rounded-[14px] bg-transparent transition-transform duration-300 hover:scale-105 md:bottom-7 md:right-7 md:h-12 md:w-12"
+        >
+          <svg
+            viewBox="0 0 64 64"
+            aria-hidden="true"
+            className="block h-full w-full drop-shadow-[0_8px_18px_rgba(37,211,102,0.22)]"
+          >
+            <rect x="4" y="4" width="56" height="56" rx="18" fill="#25D366" />
+            <rect x="12" y="12" width="40" height="40" rx="14" fill="#2fd865" />
+            <path
+              d="M32 18.5c-7.5 0-13.6 5.5-13.6 12.3 0 2.9 1 5.7 2.9 8l-1.7 7.6 7.8-2c2.1 1 4.5 1.5 7 1.5 7.5 0 13.6-5.5 13.6-12.3S39.5 18.5 32 18.5Z"
+              fill="#fff"
+            />
+            <path
+              d="M22.2 29.1c0-1.3.6-2.5 1.6-3.2l.9-.7c1-.8 2.5-.6 3.4.4l1.4 1.6c.7.8.8 2 .2 2.9l-1 1.3c-.2.3-.3.7-.1 1.1.6 1.2 1.6 2.2 2.8 2.8.4.2.8.1 1.1-.1l1.3-1c.9-.6 2.1-.5 2.9.2l1.6 1.4c1 .9 1.2 2.4.4 3.4l-.7.9c-.7 1-1.9 1.6-3.2 1.6h-.4c-2.8 0-5.6-1-7.7-2.7-3-2.4-5-6.2-5-9.9Z"
+              fill="#25D366"
+            />
+          </svg>
+        </a>
       </div>
     </div>
   );
 }
-
-
-
-
-
-
-
 

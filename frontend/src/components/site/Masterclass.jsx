@@ -1,4 +1,4 @@
-import { Award, ListChecks, BadgeCheck } from "lucide-react";
+import { Award, ListChecks, BadgeCheck, Image as ImageIcon, Smartphone, SlidersHorizontal, Users } from "lucide-react";
 
 const takeaways = [
   { icon: Award, label: "Certificate", note: "Official course completion" },
@@ -8,24 +8,51 @@ const takeaways = [
 
 const flow = [
   {
-    time: "12:00 — 3:00 PM",
+    time: "12:00 - 3:00 PM",
     chapter: "Chapter I",
     title: "Meera's Signature Glam Look",
-    body: "A live, step-by-step demonstration of the full signature glam — skin prep, luminous base, sculpting, eye, blush and lip artistry on real skin.",
+    body: "A live, step-by-step demonstration of the full signature glam - skin prep, luminous base, sculpting, eye, blush and lip artistry on real skin.",
   },
   {
-    time: "3:30 — 4:30 PM",
+    time: "3:30 - 4:30 PM",
     chapter: "Chapter II",
     title: "Finishing & Editorial Capture",
     body: "Lock-in & set the look, refine the finishing details, plus photography lighting and editing tips to showcase your signature glam like a pro.",
   },
   {
-    time: "4:30 — 6:00 PM",
+    time: "4:30 - 6:00 PM",
     chapter: "Chapter III",
     title: "Q & A with Meera",
-    body: "An intimate, open session — ask anything on technique, products, business, or building your signature in the luxury glam industry.",
+    body: "An intimate, open session - ask anything on technique, products, business, or building your signature in the luxury glam industry.",
   },
 ];
+
+const bonus = {
+  title: "Bonus Takeaways",
+  subtitle: "Included with your masterclass enrollment",
+  items: [
+    {
+      icon: ImageIcon,
+      title: "Build a standout portfolio",
+      note: "that reflects your style",
+    },
+    {
+      icon: Smartphone,
+      title: "Grow your social media",
+      note: "presence with intention",
+    },
+    {
+      icon: SlidersHorizontal,
+      title: "Choose editing tools",
+      note: "that keep your work polished",
+    },
+    {
+      icon: Users,
+      title: "Develop the mindset",
+      note: "to attract and retain clients",
+    },
+  ],
+};
 
 export default function Masterclass() {
   return (
@@ -34,7 +61,6 @@ export default function Masterclass() {
       className="w-full bg-[#efe2da] py-20 md:py-24"
     >
       <div className="max-w-[1280px] mx-auto px-6 md:px-12">
-        {/* Takeaways */}
         <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-6 md:gap-14 items-end text-center md:text-left">
           <div>
             <div className="flex items-center justify-center md:justify-start gap-3">
@@ -85,7 +111,6 @@ export default function Masterclass() {
           })}
         </ol>
 
-        {/* Flow — zigzag */}
         <div className="mt-20 md:mt-24">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 text-center md:text-left">
             <div>
@@ -103,14 +128,12 @@ export default function Masterclass() {
               </h3>
             </div>
             <p className="text-[11px] tracking-[0.32em] uppercase text-[#7c5a6e] font-medium">
-              12:00 PM — 06:00 PM IST
+              12:00 PM - 06:00 PM IST
             </p>
           </div>
 
           <div className="mt-14 relative">
-            {/* center rail — desktop only */}
             <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-[#d6c0b4] -translate-x-1/2" />
-            {/* mobile rail */}
             <div className="md:hidden absolute left-[18px] top-3 bottom-3 w-px bg-[#d6c0b4]" />
 
             <ol className="space-y-8 md:space-y-14">
@@ -122,18 +145,14 @@ export default function Masterclass() {
                     data-testid={`flow-${i + 1}`}
                     className="relative pl-11 md:pl-0"
                   >
-                    {/* mobile marker */}
                     <span className="md:hidden absolute left-[10px] top-5 w-4 h-4 rounded-full bg-[#7c5a6e] ring-[6px] ring-[#efe2da]" />
 
-                    <div
-                      className={`md:grid md:grid-cols-2 md:gap-12 lg:gap-20 items-start`}
-                    >
+                    <div className="md:grid md:grid-cols-2 md:gap-12 lg:gap-20 items-start">
                       <div
                         className={`relative ${
                           isLeft ? "md:pr-10 lg:pr-16" : "md:col-start-2 md:pl-10 lg:pl-16"
                         }`}
                       >
-                        {/* desktop marker */}
                         <span
                           className={`hidden md:block absolute top-7 w-3.5 h-3.5 rounded-full bg-[#7c5a6e] ring-[6px] ring-[#efe2da] ${
                             isLeft ? "-right-[28px] lg:-right-[34px]" : "-left-[28px] lg:-left-[34px]"
@@ -162,6 +181,45 @@ export default function Masterclass() {
                 );
               })}
             </ol>
+          </div>
+
+          <div className="mt-14 md:mt-16 rounded-sm border border-[#e3d2c8] bg-[#f8efe9] px-4 py-5 md:px-6 md:py-6 shadow-[0_18px_42px_-30px_rgba(124,90,110,0.28)]">
+            <div className="max-w-5xl mx-auto">
+              <div className="flex items-center gap-3">
+                <span className="h-px flex-1 bg-[#e2d0c6]" />
+                <h4 className="font-serif-display text-[26px] md:text-[34px] leading-[1.05] text-[#3b2f33] whitespace-nowrap">
+                  {bonus.title}
+                </h4>
+                <span className="h-px flex-1 bg-[#e2d0c6]" />
+              </div>
+              <p className="mt-3 text-center font-serif-body italic text-[16px] md:text-[20px] text-[#9a7d86]">
+                {bonus.subtitle}
+              </p>
+
+              <div className="mt-6 grid grid-cols-1 md:grid-cols-2 border-t border-[#e6d7cf]">
+                {bonus.items.map((item, index) => {
+                  const Icon = item.icon;
+                  return (
+                    <div
+                      key={item.title}
+                      className={`flex items-center gap-4 px-4 py-5 md:px-6 md:py-6 ${index >= 2 ? "border-t border-[#e6d7cf]" : ""} ${index % 2 === 1 ? "md:border-l md:border-[#e6d7cf]" : ""}`}
+                    >
+                      <div className="shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-full border border-[#ead9d1] bg-[#f3e6dd] flex items-center justify-center text-[#b58a9f]">
+                        <Icon size={22} strokeWidth={1.7} />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="font-serif-display text-[17px] md:text-[19px] leading-tight text-[#3b2f33]">
+                          {item.title}
+                        </p>
+                        <p className="mt-1 text-[14px] md:text-[15px] leading-snug text-[#6f5c61]">
+                          {item.note}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
       </div>

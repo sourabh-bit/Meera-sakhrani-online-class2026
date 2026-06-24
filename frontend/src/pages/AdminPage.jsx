@@ -1,9 +1,8 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Loader2, LogOut, RefreshCcw, ArrowLeft } from "lucide-react";
 
 const API = (process.env.REACT_APP_BACKEND_URL || "http://localhost:8000") + "/api";
-const STORAGE_KEY = "msk-admin-passcode";
 
 async function readJsonResponse(response) {
   const text = await response.text();
@@ -22,7 +21,7 @@ const STATUS_TABS = [
 ];
 
 function formatDateTime(s) {
-  if (!s) return "—";
+  if (!s) return "-";
   try {
     return new Date(s).toLocaleString();
   } catch {
@@ -49,7 +48,6 @@ function Lock({ onUnlocked }) {
         const d = await readJsonResponse(r);
         throw new Error(d.detail || "Invalid passcode");
       }
-      localStorage.setItem(STORAGE_KEY, code);
       onUnlocked(code);
     } catch (e) {
       setErr(e.message);
@@ -71,10 +69,7 @@ function Lock({ onUnlocked }) {
         <ArrowLeft size={14} /> Home
       </Link>
 
-      <form
-        onSubmit={submit}
-        className="w-full max-w-xl"
-      >
+      <form onSubmit={submit} className="w-full max-w-xl">
         <p className="text-[10px] tracking-[0.32em] uppercase text-[#9b8a7c] font-semibold">
           Admin
         </p>
@@ -89,8 +84,8 @@ function Lock({ onUnlocked }) {
           autoFocus
           value={code}
           onChange={(e) => setCode(e.target.value)}
-          className="mt-12 w-full bg-transparent border-b border-white/40 focus:border-white outline-none py-3 text-[24px] md:text-[28px] tracking-[0.45em] text-white placeholder:text-white/30"
-          placeholder="••••••••"
+          className="mt-12 w-full bg-transparent border-b border-white/40 focus:border-white outline-none py-3 font-sans text-[24px] md:text-[28px] tracking-[0.2em] text-white placeholder:text-white/30"
+          placeholder="PASSWORD"
         />
 
         {err && (
@@ -117,6 +112,7 @@ function StatusPill({ status }) {
     approved: "bg-[#1f6f4e] text-[#f5ede7]",
     rejected: "bg-[#7a1f2a] text-[#f5ede7]",
   };
+
   return (
     <span
       data-testid={`status-pill-${status}`}
@@ -151,14 +147,16 @@ function ReservationCard({ r, onAct, busy }) {
         {[
           { k: "Email", v: r.email },
           { k: "Phone", v: r.phone },
+          { k: "GST", v: r.gst_number || "-" },
+          { k: "PAN", v: r.pan_number || "-" },
           { k: "Amount", v: `Rs ${r.amount?.toLocaleString("en-IN")}` },
           { k: "Created", v: formatDateTime(r.created_at) },
           {
             k: "Claimed Paid At",
             v: r.claimed_paid_at ? formatDateTime(r.claimed_paid_at) : "Not claimed yet",
           },
-          { k: "UTR", v: r.utr || "—" },
-          { k: "Decided At", v: r.decided_at ? formatDateTime(r.decided_at) : "—" },
+          { k: "UTR", v: r.utr || "-" },
+          { k: "Decided At", v: r.decided_at ? formatDateTime(r.decided_at) : "-" },
         ].map((row) => (
           <div key={row.k}>
             <dt className="text-[10px] tracking-[0.3em] uppercase text-[#9b8a7c] font-semibold">
@@ -196,35 +194,36 @@ function ReservationCard({ r, onAct, busy }) {
 }
 
 export default function AdminPage() {
-  const [code, setCode] = useState(() => localStorage.getItem(STORAGE_KEY));
+  const [code, setCode] = useState(null);
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [busy, setBusy] = useState(false);
   const [tab, setTab] = useState("all");
 
-  const load = async (pcode = code) => {
-    if (!pcode) return;
-    setLoading(true);
-    try {
-      const r = await fetch(`${API}/admin/reservations`, {
-        headers: { "X-Admin-Passcode": pcode },
-      });
-      if (r.status === 401) {
-        localStorage.removeItem(STORAGE_KEY);
-        setCode(null);
-        return;
+  const load = useCallback(
+    async (pcode = code) => {
+      if (!pcode) return;
+      setLoading(true);
+      try {
+        const r = await fetch(`${API}/admin/reservations`, {
+          headers: { "X-Admin-Passcode": pcode },
+        });
+        if (r.status === 401) {
+          setCode(null);
+          return;
+        }
+        const data = await readJsonResponse(r);
+        setList(data || []);
+      } finally {
+        setLoading(false);
       }
-      const data = await readJsonResponse(r);
-      setList(data || []);
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    [code]
+  );
 
   useEffect(() => {
     if (code) load(code);
-    // eslint-disable-next-line
-  }, [code]);
+  }, [code, load]);
 
   if (!code) return <Lock onUnlocked={(c) => setCode(c)} />;
 
@@ -252,7 +251,6 @@ export default function AdminPage() {
   const filtered = tab === "all" ? list : list.filter((r) => r.status === tab);
 
   const logout = () => {
-    localStorage.removeItem(STORAGE_KEY);
     setCode(null);
   };
 
@@ -261,25 +259,22 @@ export default function AdminPage() {
       <div className="max-w-[1280px] mx-auto px-6 md:px-12 py-12 md:py-16">
         <Link
           to="/"
-          data-testid="admin-back"
+          data-testid="admin-back-home"
           className="inline-flex items-center gap-2 text-[10px] md:text-[11px] tracking-[0.3em] uppercase text-[#3b2f33] hover:text-[#7a6455] transition-colors mb-8"
         >
-          <ArrowLeft size={14} /> Back to Home
+          <ArrowLeft size={14} /> Home
         </Link>
 
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <div>
             <p className="text-[10px] tracking-[0.32em] uppercase text-[#9b8a7c] font-semibold">
-              Admin
+              Admin Panel
             </p>
-            <h1
-              data-testid="admin-title"
-              className="mt-4 font-serif-display text-[48px] md:text-[72px] leading-[0.95] text-[#3b2f33]"
-            >
+            <h1 className="mt-4 font-serif-display text-[48px] md:text-[72px] leading-[0.95] text-[#3b2f33]">
               Reservations
             </h1>
             <p className="mt-4 text-[14.5px] text-[#5a4750]">
-              Verify UPI payments and approve or reject reservations.
+              Review bookings, approve payments, and manage access securely.
             </p>
           </div>
 
@@ -288,34 +283,33 @@ export default function AdminPage() {
               <button
                 key={t.id}
                 onClick={() => setTab(t.id)}
-                data-testid={`tab-${t.id}`}
                 className={`px-4 py-2.5 text-[10px] tracking-[0.3em] uppercase font-semibold border transition-all ${
                   tab === t.id
-                    ? "bg-[#0d0d0d] text-[#f5ede7] border-[#0d0d0d]"
-                    : "bg-[#f5ede7] text-[#3b2f33] border-[#3b2f33]/25 hover:border-[#3b2f33]"
+                    ? "bg-[#3b2f33] text-[#f5ede7] border-[#3b2f33]"
+                    : "bg-transparent text-[#3b2f33] border-[#3b2f33]/20 hover:border-[#3b2f33]"
                 }`}
               >
                 {t.label}
-                <span className="ml-2 text-[9px] opacity-70">
-                  {counts[t.id]}
-                </span>
+                <span className="ml-2 text-[9px] opacity-70">{counts[t.id]}</span>
               </button>
             ))}
+
             <button
               onClick={() => load()}
-              data-testid="refresh-btn"
+              data-testid="admin-refresh"
               className="ml-1 p-2.5 border border-[#3b2f33]/25 text-[#3b2f33] hover:bg-[#3b2f33] hover:text-[#f5ede7] transition-all"
-              aria-label="Refresh"
+              aria-label="Refresh reservations"
             >
-              <RefreshCcw size={14} />
+              <RefreshCcw size={15} />
             </button>
+
             <button
               onClick={logout}
-              data-testid="logout-btn"
+              data-testid="admin-logout"
               className="p-2.5 border border-[#3b2f33]/25 text-[#3b2f33] hover:bg-[#3b2f33] hover:text-[#f5ede7] transition-all"
-              aria-label="Lock"
+              aria-label="Logout admin"
             >
-              <LogOut size={14} />
+              <LogOut size={15} />
             </button>
           </div>
         </div>
@@ -326,11 +320,13 @@ export default function AdminPage() {
               <Loader2 size={14} className="animate-spin" /> Loading...
             </div>
           )}
+
           {!loading && filtered.length === 0 && (
             <div className="text-center py-20 font-serif-display italic text-[24px] text-[#8a7b71]">
-              No reservations in this view.
+              No reservations found.
             </div>
           )}
+
           {filtered.map((r) => (
             <ReservationCard key={r.mpm_id} r={r} onAct={onAct} busy={busy} />
           ))}
@@ -339,6 +335,3 @@ export default function AdminPage() {
     </div>
   );
 }
-
-
-
