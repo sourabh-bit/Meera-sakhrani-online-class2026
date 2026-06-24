@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: meera-masterclass-api
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn server:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/
+    envVars:
+      - key: CORS_ORIGINS
+        value: https://meera-masterclass-web.onrender.com
+
+  - type: web
+    name: meera-masterclass-web
+    runtime: static
+    rootDir: frontend
+    buildCommand: yarn install --frozen-lockfile && yarn build
+    staticPublishPath: build
+    envVars:
+      - key: REACT_APP_BACKEND_URL
+        value: https://meera-masterclass-api.onrender.com
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
