@@ -15,13 +15,13 @@ const API = (process.env.REACT_APP_BACKEND_URL || "http://localhost:8000") + "/a
 const WHATSAPP_NUMBER = "919818793850";
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi MS Art, I have paid and shared the screenshot.")}`;
 const UPI_APP_SHORTCUTS = [
-  { label: "PhonePe", packageName: "com.phonepe.app" },
-  { label: "Google Pay", packageName: "com.google.android.apps.nbu.paisa.user" },
-  { label: "Paytm", packageName: "net.one97.paytm" },
-  { label: "BHIM", packageName: "in.org.npci.upiapp" },
+  { label: "PhonePe", androidPackage: "com.phonepe.app", iosScheme: "phonepe" },
+  { label: "Google Pay", androidPackage: "com.google.android.apps.nbu.paisa.user", iosScheme: "tez" },
+  { label: "Paytm", androidPackage: "net.one97.paytm", iosScheme: "paytmmp" },
+  { label: "BHIM", androidPackage: "in.org.npci.upiapp", iosScheme: "bhim" },
 ];
 
-function buildUpiIntentUrl(paymentInfo, packageName) {
+function buildPaymentLaunchUrl(app, paymentInfo) {
   const params = new URLSearchParams({
     pa: paymentInfo.upi_id,
     pn: paymentInfo.payee_name,
@@ -29,7 +29,12 @@ function buildUpiIntentUrl(paymentInfo, packageName) {
     cu: paymentInfo.currency || "INR",
     tn: "Signature Glam Look Masterclass",
   });
-  return `intent://pay?${params.toString()}#Intent;scheme=upi;action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;package=${packageName};end`;
+  const query = params.toString();
+  const isAndroid = /Android/i.test(navigator.userAgent || "");
+  if (isAndroid) {
+    return `intent://pay?${query}#Intent;scheme=upi;action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;package=${app.androidPackage};end`;
+  }
+  return `${app.iosScheme}://pay?${query}`;
 }
 
 async function readJsonResponse(response) {
@@ -138,12 +143,9 @@ export default function CheckoutPage() {
       setTimeout(() => setCopied(null), 1400);
     });
   };
-  const openUpiApp = (packageName) => {
+  const openUpiApp = (app) => {
     if (!paymentInfo?.upi_uri) return;
-    const isAndroid = /Android/i.test(navigator.userAgent || "");
-    const launchUrl = isAndroid
-      ? buildUpiIntentUrl(paymentInfo, packageName)
-      : paymentInfo.upi_uri;
+    const launchUrl = buildPaymentLaunchUrl(app, paymentInfo);
     setShowUpiChooser(false);
     window.location.href = launchUrl;
   };
@@ -376,9 +378,9 @@ export default function CheckoutPage() {
                     <div className="mt-4 grid grid-cols-2 gap-3">
                       {UPI_APP_SHORTCUTS.map((app) => (
                         <button
-                          key={app.packageName}
+                          key={app.androidPackage}
                           type="button"
-                          onClick={() => openUpiApp(app.packageName)}
+                          onClick={() => openUpiApp(app)}
                           className="flex flex-col items-center justify-center gap-2 rounded-xl border border-[#7a6455]/20 bg-white px-3 py-4 text-center transition-colors hover:bg-[#f5ede7]"
                         >
                           <span className="text-[13px] font-semibold text-[#2d2326]">{app.label}</span>
@@ -583,6 +585,12 @@ export default function CheckoutPage() {
     </div>
   );
 }
+
+
+
+
+
+
 
 
 
