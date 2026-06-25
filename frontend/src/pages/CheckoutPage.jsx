@@ -14,6 +14,18 @@ import {
 const API = (process.env.REACT_APP_BACKEND_URL || "http://localhost:8000") + "/api";
 const WHATSAPP_NUMBER = "919818793850";
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi MS Art, I have paid and shared the screenshot.")}`;
+const UPI_APP_SHORTCUTS = [
+  { label: "PhonePe", packageName: "com.phonepe.app" },
+  { label: "Google Pay", packageName: "com.google.android.apps.nbu.paisa.user" },
+  { label: "Paytm", packageName: "net.one97.paytm" },
+  { label: "BHIM", packageName: "in.org.npci.upiapp" },
+];
+
+function buildUpiIntentUrl(upiUri, packageName) {
+  const intentBase = upiUri.replace(/^upi:\/\//i, "intent://");
+  const packagePart = packageName ? `package=${packageName};` : "";
+  return `${intentBase}#Intent;scheme=upi;action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;${packagePart}end`;
+}
 
 async function readJsonResponse(response) {
   const text = await response.text();
@@ -120,6 +132,14 @@ export default function CheckoutPage() {
       setCopied(k);
       setTimeout(() => setCopied(null), 1400);
     });
+  };
+  const openUpiApp = (packageName) => {
+    if (!paymentInfo?.upi_uri) return;
+    const isAndroid = /Android/i.test(navigator.userAgent || "");
+    const launchUrl = isAndroid
+      ? buildUpiIntentUrl(paymentInfo.upi_uri, packageName)
+      : paymentInfo.upi_uri;
+    window.location.href = launchUrl;
   };
 
   return (
@@ -318,13 +338,28 @@ export default function CheckoutPage() {
                   <p className="text-[11px] md:text-[12px] font-semibold tracking-[0.14em] uppercase text-[#3b2f33]">After paying, send the screenshot on WhatsApp to MS Art.</p>
                 </div>
                 {paymentInfo?.upi_uri && (
-                  <a
+                  <button
                     data-testid="upi-app-link"
-                    href={paymentInfo.upi_uri}
+                    type="button"
+                    onClick={() => openUpiApp()}
                     className="mt-5 inline-flex md:hidden px-6 py-3 rounded-full bg-[#3b2f33] text-[#f5ede7] text-[10.5px] tracking-[0.32em] uppercase font-semibold"
                   >
                     Open UPI App
-                  </a>
+                  </button>
+                )}
+                {paymentInfo?.upi_uri && (
+                  <div className="mt-3 flex flex-wrap gap-2 md:hidden">
+                    {UPI_APP_SHORTCUTS.map((app) => (
+                      <button
+                        key={app.packageName}
+                        type="button"
+                        onClick={() => openUpiApp(app.packageName)}
+                        className="inline-flex items-center rounded-full border border-[#7a6455]/20 bg-white px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-[#3b2f33] transition-colors hover:bg-[#f5ede7]"
+                      >
+                        {app.label}
+                      </button>
+                    ))}
+                  </div>
                 )}
               </div>
 
@@ -515,4 +550,3 @@ export default function CheckoutPage() {
     </div>
   );
 }
-
