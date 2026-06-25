@@ -21,10 +21,15 @@ const UPI_APP_SHORTCUTS = [
   { label: "BHIM", packageName: "in.org.npci.upiapp" },
 ];
 
-function buildUpiIntentUrl(upiUri, packageName) {
-  const intentBase = upiUri.replace(/^upi:\/\//i, "intent://");
-  const packagePart = packageName ? `package=${packageName};` : "";
-  return `${intentBase}#Intent;scheme=upi;action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;${packagePart}end`;
+function buildUpiIntentUrl(paymentInfo, packageName) {
+  const params = new URLSearchParams({
+    pa: paymentInfo.upi_id,
+    pn: paymentInfo.payee_name,
+    am: String(paymentInfo.amount),
+    cu: paymentInfo.currency || "INR",
+    tn: "Signature Glam Look Masterclass",
+  });
+  return `intent://pay?${params.toString()}#Intent;scheme=upi;action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;package=${packageName};end`;
 }
 
 async function readJsonResponse(response) {
@@ -137,7 +142,7 @@ export default function CheckoutPage() {
     if (!paymentInfo?.upi_uri) return;
     const isAndroid = /Android/i.test(navigator.userAgent || "");
     const launchUrl = isAndroid
-      ? buildUpiIntentUrl(paymentInfo.upi_uri, packageName)
+      ? buildUpiIntentUrl(paymentInfo, packageName)
       : paymentInfo.upi_uri;
     window.location.href = launchUrl;
   };
@@ -341,7 +346,7 @@ export default function CheckoutPage() {
                   <button
                     data-testid="upi-app-link"
                     type="button"
-                    onClick={() => openUpiApp()}
+                    onClick={() => openUpiApp(UPI_APP_SHORTCUTS[0].packageName)}
                     className="mt-5 inline-flex md:hidden px-6 py-3 rounded-full bg-[#3b2f33] text-[#f5ede7] text-[10.5px] tracking-[0.32em] uppercase font-semibold"
                   >
                     Open UPI App
