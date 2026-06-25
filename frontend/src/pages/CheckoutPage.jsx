@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import {
@@ -49,7 +49,7 @@ export default function CheckoutPage() {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState(null);
   const [copied, setCopied] = useState(null);
-
+  const [showUpiChooser, setShowUpiChooser] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", phone: "", gst_number: "", pan_number: "" });
   const [reservation, setReservation] = useState(null);
   const [paymentInfo, setPaymentInfo] = useState(null);
@@ -144,6 +144,7 @@ export default function CheckoutPage() {
     const launchUrl = isAndroid
       ? buildUpiIntentUrl(paymentInfo, packageName)
       : paymentInfo.upi_uri;
+    setShowUpiChooser(false);
     window.location.href = launchUrl;
   };
 
@@ -346,28 +347,55 @@ export default function CheckoutPage() {
                   <button
                     data-testid="upi-app-link"
                     type="button"
-                    onClick={() => openUpiApp(UPI_APP_SHORTCUTS[0].packageName)}
+                    onClick={() => setShowUpiChooser(true)}
                     className="mt-5 inline-flex md:hidden px-6 py-3 rounded-full bg-[#3b2f33] text-[#f5ede7] text-[10.5px] tracking-[0.32em] uppercase font-semibold"
                   >
                     Open UPI App
                   </button>
                 )}
-                {paymentInfo?.upi_uri && (
-                  <div className="mt-3 flex flex-wrap gap-2 md:hidden">
-                    {UPI_APP_SHORTCUTS.map((app) => (
-                      <button
-                        key={app.packageName}
-                        type="button"
-                        onClick={() => openUpiApp(app.packageName)}
-                        className="inline-flex items-center rounded-full border border-[#7a6455]/20 bg-white px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-[#3b2f33] transition-colors hover:bg-[#f5ede7]"
-                      >
-                        {app.label}
-                      </button>
-                    ))}
-                  </div>
-                )}
               </div>
 
+              {showUpiChooser && paymentInfo?.upi_uri && (
+                <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/45 px-4 py-6 md:p-6">
+                  <div className="w-full max-w-md rounded-2xl bg-[#f7efea] border border-[#7a6455]/20 shadow-[0_18px_48px_rgba(0,0,0,0.22)] p-5 md:p-6">
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <p className="text-[10px] tracking-[0.32em] uppercase text-[#7a6455] font-semibold">Choose UPI app</p>
+                        <h3 className="mt-2 font-serif-display text-[24px] text-[#2d2326]">Open with</h3>
+                        <p className="mt-2 text-[12px] leading-relaxed text-[#5a4750]">Pick the app you want to pay with.</p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowUpiChooser(false)}
+                        aria-label="Close UPI chooser"
+                        className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#7a6455]/20 bg-white text-[#3b2f33]"
+                      >
+                        <XCircle size={18} />
+                      </button>
+                    </div>
+                    <div className="mt-4 grid grid-cols-2 gap-3">
+                      {UPI_APP_SHORTCUTS.map((app) => (
+                        <button
+                          key={app.packageName}
+                          type="button"
+                          onClick={() => openUpiApp(app.packageName)}
+                          className="flex flex-col items-center justify-center gap-2 rounded-xl border border-[#7a6455]/20 bg-white px-3 py-4 text-center transition-colors hover:bg-[#f5ede7]"
+                        >
+                          <span className="text-[13px] font-semibold text-[#2d2326]">{app.label}</span>
+                          <span className="text-[10px] uppercase tracking-[0.22em] text-[#7a6455]">Installed app</span>
+                        </button>
+                      ))}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setShowUpiChooser(false)}
+                      className="mt-4 w-full rounded-full bg-[#3b2f33] px-4 py-3 text-[10px] font-semibold uppercase tracking-[0.32em] text-[#f5ede7]"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
               {/* UPI ID + UTR */}
               <div className="rounded-xl border border-[#7a6455]/20 bg-[#f7efea] p-6 md:p-9 shadow-[0_10px_28px_rgba(122,100,85,0.08)]">
                 <p className="inline-flex rounded-full bg-[#7a6455] px-3 py-1 text-[10px] tracking-[0.32em] uppercase text-[#f5ede7] font-semibold">
@@ -555,3 +583,12 @@ export default function CheckoutPage() {
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
