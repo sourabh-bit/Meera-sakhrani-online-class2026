@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import {
@@ -9,6 +9,7 @@ import {
   PartyPopper,
   XCircle,
   Hourglass,
+  Landmark,
 } from "lucide-react";
 
 const API = (process.env.REACT_APP_BACKEND_URL || "http://localhost:8000") + "/api";
@@ -55,10 +56,13 @@ export default function CheckoutPage() {
   const [err, setErr] = useState(null);
   const [copied, setCopied] = useState(null);
   const [showUpiChooser, setShowUpiChooser] = useState(false);
+  const [showUtrReminder, setShowUtrReminder] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", phone: "", gst_number: "", pan_number: "" });
   const [reservation, setReservation] = useState(null);
   const [paymentInfo, setPaymentInfo] = useState(null);
   const [utr, setUtr] = useState("");
+  const utrInputRef = useRef(null);
+  const paymentReturnArmedRef = useRef(false);
 
   useEffect(() => {
     fetch(`${API}/payment-info`)
@@ -66,6 +70,45 @@ export default function CheckoutPage() {
       .then(setPaymentInfo)
       .catch(() => {});
   }, []);
+  useEffect(() => {
+    if (step !== STEPS.PAY) {
+      paymentReturnArmedRef.current = false;
+      setShowUtrReminder(false);
+      return;
+    }
+
+    paymentReturnArmedRef.current = false;
+
+    const armReminder = () => {
+      paymentReturnArmedRef.current = true;
+    };
+
+    const revealReminder = () => {
+      if (!paymentReturnArmedRef.current) return;
+      paymentReturnArmedRef.current = false;
+      setShowUtrReminder(true);
+    };
+
+    const handleVisibility = () => {
+      if (document.visibilityState === "hidden") {
+        armReminder();
+        return;
+      }
+      if (document.visibilityState === "visible") {
+        revealReminder();
+      }
+    };
+
+    window.addEventListener("blur", armReminder);
+    window.addEventListener("focus", revealReminder);
+    document.addEventListener("visibilitychange", handleVisibility);
+
+    return () => {
+      window.removeEventListener("blur", armReminder);
+      window.removeEventListener("focus", revealReminder);
+      document.removeEventListener("visibilitychange", handleVisibility);
+    };
+  }, [step]);
 
   // Poll status while on DONE step and still pending
   useEffect(() => {
@@ -128,8 +171,7 @@ export default function CheckoutPage() {
       if (!r.ok) throw new Error(data.detail || "Failed");
       setReservation(data);
       setStep(STEPS.DONE);
-      const whatsappMessage = `Hi Ms Art. this is ${form.name}. I have paid this is my screenshot. UTR id ${utr}.`;
-      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMessage)}`, "_blank", "noopener,noreferrer");
+      setShowUtrReminder(false);
     } catch (e) {
       setErr(e.message);
     } finally {
@@ -146,6 +188,7 @@ export default function CheckoutPage() {
   const openUpiApp = (app) => {
     if (!paymentInfo?.upi_uri) return;
     const launchUrl = buildPaymentLaunchUrl(app, paymentInfo);
+    paymentReturnArmedRef.current = true;
     setShowUpiChooser(false);
     window.location.href = launchUrl;
   };
@@ -398,7 +441,47 @@ export default function CheckoutPage() {
                   </div>
                 </div>
               )}
-              {/* UPI ID + UTR */}
+              {/* UTR reminder modal */}
+              {showUtrReminder && (
+                <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/45 px-4 py-6 md:p-6">
+                  <div className="w-full max-w-md rounded-2xl bg-[#f7efea] border border-[#7a6455]/20 shadow-[0_18px_48px_rgba(0,0,0,0.22)] p-5 md:p-6">
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <p className="text-[10px] tracking-[0.32em] uppercase text-[#7a6455] font-semibold">Payment reminder</p>
+                        <h3 className="mt-2 font-serif-display text-[24px] text-[#2d2326]">Enter your <span className="italic text-[#7a6455]">UTR</span></h3>
+                        <p className="mt-2 text-[12px] leading-relaxed text-[#5a4750]">Return to this page, type the UTR / reference number, and tap <span className="font-semibold">I Have Paid</span>.</p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowUtrReminder(false)}
+                        aria-label="Close payment reminder"
+                        className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#7a6455]/20 bg-white text-[#3b2f33]"
+                      >
+                        <XCircle size={18} />
+                      </button>
+                    </div>
+
+                    <div className="mt-5 rounded-xl border border-[#7a6455]/15 bg-white px-4 py-4">
+                      <p className="text-[10px] tracking-[0.28em] uppercase text-[#7a6455] font-semibold">Next step</p>
+                      <p className="mt-2 text-[14px] leading-relaxed text-[#3b2f33]">If payment is complete, you only need the UTR before submitting.</p>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowUtrReminder(false);
+                        requestAnimationFrame(() => {
+                          utrInputRef.current?.focus();
+                          utrInputRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+                        });
+                      }}
+                      className="mt-5 w-full rounded-full bg-[#7a6455] px-4 py-3 text-[10px] font-semibold uppercase tracking-[0.32em] text-[#f5ede7]"
+                    >
+                      Fill UTR
+                    </button>
+                  </div>
+                </div>
+              )}              {/* UPI ID + UTR */}
               <div className="rounded-xl border border-[#7a6455]/20 bg-[#f7efea] p-6 md:p-9 shadow-[0_10px_28px_rgba(122,100,85,0.08)]">
                 <p className="inline-flex rounded-full bg-[#7a6455] px-3 py-1 text-[10px] tracking-[0.32em] uppercase text-[#f5ede7] font-semibold">
                   Or pay to this UPI ID
@@ -434,6 +517,75 @@ export default function CheckoutPage() {
                   <span className="font-semibold">&ldquo;I Have Paid&rdquo;</span>.
                 </div>
 
+                <div className="mt-6 rounded-sm border border-[#dfd2c4] bg-[#f5ede7] p-4 md:p-5">
+                  <div className="flex items-center gap-2">
+                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#eee4d8] text-[#7a6455]">
+                      <Landmark size={15} />
+                    </span>
+                    <p className="text-[10px] tracking-[0.32em] uppercase text-[#7a6455] font-semibold">
+                      Bank transfer details
+                    </p>
+                  </div>
+
+                  <div className="mt-4 space-y-3 text-[13px] md:text-[14px] text-[#3b2f33]">
+                    <div className="flex items-start justify-between gap-4 border-b border-[#dfd2c4] pb-3">
+                      <div>
+                        <p className="text-[10px] tracking-[0.28em] uppercase text-[#7a6455] font-semibold">
+                          Account number
+                        </p>
+                        <p className="mt-1 font-serif-body text-[17px] md:text-[18px] break-all">
+                          071405003337
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => copy("bank-account", "071405003337")}
+                        aria-label="Copy account number"
+                        className="shrink-0 w-9 h-9 rounded-full border border-[#7a6455]/30 bg-white flex items-center justify-center text-[#7a6455] hover:bg-[#7a6455] hover:text-[#f5ede7] hover:border-[#7a6455] transition-all"
+                      >
+                        {copied === "bank-account" ? <Check size={13} /> : <Copy size={13} />}
+                      </button>
+                    </div>
+
+                    <div className="flex items-start justify-between gap-4 border-b border-[#dfd2c4] pb-3">
+                      <div>
+                        <p className="text-[10px] tracking-[0.28em] uppercase text-[#7a6455] font-semibold">
+                          Account holder&apos;s name
+                        </p>
+                        <p className="mt-1 font-serif-body text-[17px] md:text-[18px]">
+                          MEERA SAKHRANI BEAUTY
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => copy("bank-holder", "MEERA SAKHRANI BEAUTY")}
+                        aria-label="Copy account holder name"
+                        className="shrink-0 w-9 h-9 rounded-full border border-[#7a6455]/30 bg-white flex items-center justify-center text-[#7a6455] hover:bg-[#7a6455] hover:text-[#f5ede7] hover:border-[#7a6455] transition-all"
+                      >
+                        {copied === "bank-holder" ? <Check size={13} /> : <Copy size={13} />}
+                      </button>
+                    </div>
+
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <p className="text-[10px] tracking-[0.28em] uppercase text-[#7a6455] font-semibold">
+                          IFSC code
+                        </p>
+                        <p className="mt-1 font-serif-body text-[17px] md:text-[18px]">
+                          ICIC0000714
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => copy("bank-ifsc", "ICIC0000714")}
+                        aria-label="Copy IFSC code"
+                        className="shrink-0 w-9 h-9 rounded-full border border-[#7a6455]/30 bg-white flex items-center justify-center text-[#7a6455] hover:bg-[#7a6455] hover:text-[#f5ede7] hover:border-[#7a6455] transition-all"
+                      >
+                        {copied === "bank-ifsc" ? <Check size={13} /> : <Copy size={13} />}
+                      </button>
+                    </div>
+                  </div>
+                </div>
                 <form onSubmit={onClaim} className="mt-6">
 
                   <label className="text-[10px] tracking-[0.32em] uppercase text-[#7a6455] font-semibold">
@@ -446,6 +598,7 @@ export default function CheckoutPage() {
                     placeholder="e.g. 234567890123"
                     value={utr}
                     onChange={(e) => setUtr(e.target.value)}
+                    ref={utrInputRef}
                     className="mt-2 w-full bg-transparent border-b border-[#3b2f33]/30 focus:border-[#7a6455] outline-none py-2.5 font-serif-body text-[18px] md:text-[20px] text-[#3b2f33] placeholder:text-[#9b8a7c] transition-colors uppercase tracking-[0.08em]"
                   />
                   {err && (
@@ -585,6 +738,11 @@ export default function CheckoutPage() {
     </div>
   );
 }
+
+
+
+
+
 
 
 

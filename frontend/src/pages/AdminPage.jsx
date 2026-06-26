@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Loader2, LogOut, RefreshCcw, ArrowLeft } from "lucide-react";
+import { ArrowRight, Loader2, LogOut, RefreshCcw, ArrowLeft, Trash2 } from "lucide-react";
 
 const API = (process.env.REACT_APP_BACKEND_URL || "http://localhost:8000") + "/api";
 
@@ -106,21 +106,24 @@ function Lock({ onUnlocked }) {
   );
 }
 
-function StatusPill({ status }) {
+function StatusPill({ status, completed }) {
   const map = {
     pending: "bg-[#eee4d8] text-[#7a6455]",
     approved: "bg-[#1f6f4e] text-[#f5ede7]",
     rejected: "bg-[#7a1f2a] text-[#f5ede7]",
+    completed: "bg-[#1f6f4e] text-[#f5ede7]",
   };
+
+  const label = completed ? "Completed" : status;
 
   return (
     <span
       data-testid={`status-pill-${status}`}
       className={`px-3 py-1.5 text-[10px] tracking-[0.32em] uppercase font-semibold ${
-        map[status] || "bg-gray-200"
+        map[completed ? "completed" : status] || "bg-gray-200"
       }`}
     >
-      {status}
+      {label}
     </span>
   );
 }
@@ -140,7 +143,7 @@ function ReservationCard({ r, onAct, busy }) {
             {r.mpm_id}
           </p>
         </div>
-        <StatusPill status={r.status} />
+        <StatusPill status={r.status} completed={Boolean(r.claimed_paid_at || r.utr)} />
       </div>
 
       <dl className="mt-7 grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-5">
@@ -169,26 +172,48 @@ function ReservationCard({ r, onAct, busy }) {
         ))}
       </dl>
 
-      {r.status === "pending" && (
-        <div className="mt-7 flex items-center gap-3">
+      <div className="mt-7 space-y-4">
+        {r.status === "pending" && (
+          <div className="flex items-center gap-3 flex-wrap">
+            <button
+              data-testid={`approve-${r.mpm_id}`}
+              disabled={busy}
+              onClick={() => onAct(r.mpm_id, "approve")}
+              className="px-7 py-3 bg-[#3b2f33] text-[#f5ede7] text-[10.5px] tracking-[0.32em] uppercase font-semibold hover:bg-[#1f1719] disabled:opacity-60 transition-all"
+            >
+              Approve
+            </button>
+            <button
+              data-testid={`reject-${r.mpm_id}`}
+              disabled={busy}
+              onClick={() => onAct(r.mpm_id, "reject")}
+              className="px-7 py-3 border border-[#3b2f33]/40 text-[#3b2f33] text-[10.5px] tracking-[0.32em] uppercase font-semibold hover:bg-[#3b2f33] hover:text-[#f5ede7] disabled:opacity-60 transition-all"
+            >
+              Reject
+            </button>
+          </div>
+        )}
+
+        <div className="rounded-sm border border-[#b94b4b]/25 bg-[#fff5f5] p-4 md:p-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <p className="text-[10px] tracking-[0.3em] uppercase text-[#b94b4b] font-semibold">
+              Danger zone
+            </p>
+            <p className="mt-2 text-[13px] leading-relaxed text-[#7b2d2d] max-w-2xl">
+              Deleting this user will permanently remove the reservation, payment details, and UTR from the admin panel.
+              This action cannot be undone.
+            </p>
+          </div>
           <button
-            data-testid={`approve-${r.mpm_id}`}
+            data-testid={`delete-${r.mpm_id}`}
             disabled={busy}
-            onClick={() => onAct(r.mpm_id, "approve")}
-            className="px-7 py-3 bg-[#3b2f33] text-[#f5ede7] text-[10.5px] tracking-[0.32em] uppercase font-semibold hover:bg-[#1f1719] disabled:opacity-60 transition-all"
+            onClick={() => onAct(r.mpm_id, "delete")}
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-[#b94b4b] text-[#fff5f5] text-[10.5px] tracking-[0.32em] uppercase font-semibold hover:bg-[#962f2f] disabled:opacity-60 transition-all"
           >
-            Approve
-          </button>
-          <button
-            data-testid={`reject-${r.mpm_id}`}
-            disabled={busy}
-            onClick={() => onAct(r.mpm_id, "reject")}
-            className="px-7 py-3 border border-[#3b2f33]/40 text-[#3b2f33] text-[10.5px] tracking-[0.32em] uppercase font-semibold hover:bg-[#3b2f33] hover:text-[#f5ede7] disabled:opacity-60 transition-all"
-          >
-            Reject
+            <Trash2 size={14} /> Delete User
           </button>
         </div>
-      )}
+      </div>
     </article>
   );
 }
@@ -228,11 +253,15 @@ export default function AdminPage() {
   if (!code) return <Lock onUnlocked={(c) => setCode(c)} />;
 
   const onAct = async (mpm, action) => {
-    if (!window.confirm(`${action.toUpperCase()} this reservation?`)) return;
+    const confirmMessage =
+      action === "delete"
+        ? "Danger: this user will be deleted permanently. This action cannot be undone. Delete this reservation?"
+        : `${action.toUpperCase()} this reservation?`;
+    if (!window.confirm(confirmMessage)) return;
     setBusy(true);
     try {
       await fetch(`${API}/admin/reservations/${mpm}/${action}`, {
-        method: "POST",
+        method: action === "delete" ? "DELETE" : "POST",
         headers: { "X-Admin-Passcode": code },
       });
       await load();
@@ -335,3 +364,6 @@ export default function AdminPage() {
     </div>
   );
 }
+
+
+
