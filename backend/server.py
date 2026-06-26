@@ -87,13 +87,6 @@ class InMemoryCollection:
                 return InMemoryUpdateResult(1, 1)
         return InMemoryUpdateResult(0, 0)
 
-    async def delete_one(self, query):
-        for idx, doc in enumerate(self._docs):
-            if self._matches(doc, query):
-                del self._docs[idx]
-                return InMemoryUpdateResult(1, 1)
-        return InMemoryUpdateResult(0, 0)
-
     def find(self, query, projection=None):
         items = [self._project(doc, projection) for doc in self._docs if self._matches(doc, query)]
         return InMemoryCursor(items)
@@ -281,15 +274,6 @@ async def admin_reject(mpm_id: str, _: bool = Depends(require_admin)):
     return Reservation(**doc)
 
 
-@api_router.delete("/admin/reservations/{mpm_id}")
-async def admin_delete_reservation(mpm_id: str, _: bool = Depends(require_admin)):
-    doc = await db.reservations.find_one({"mpm_id": mpm_id}, {"_id": 0})
-    if not doc:
-        raise HTTPException(status_code=404, detail="Reservation not found")
-    await db.reservations.delete_one({"mpm_id": mpm_id})
-    return {"ok": True, "deleted": mpm_id}
-
-
 # ------------------ App wiring ------------------
 app.include_router(api_router)
 
@@ -330,6 +314,7 @@ logger = logging.getLogger(__name__)
 async def shutdown_db_client():
     if client:
         client.close()
+
 
 
 

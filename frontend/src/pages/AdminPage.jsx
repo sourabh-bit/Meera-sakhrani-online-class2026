@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Loader2, LogOut, RefreshCcw, ArrowLeft, Trash2 } from "lucide-react";
+import { ArrowRight, Loader2, LogOut, RefreshCcw, ArrowLeft } from "lucide-react";
 
 const API = (process.env.REACT_APP_BACKEND_URL || "http://localhost:8000") + "/api";
 
@@ -194,25 +194,7 @@ function ReservationCard({ r, onAct, busy }) {
           </div>
         )}
 
-        <div className="rounded-sm border border-[#b94b4b]/25 bg-[#fff5f5] p-4 md:p-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div>
-            <p className="text-[10px] tracking-[0.3em] uppercase text-[#b94b4b] font-semibold">
-              Danger zone
-            </p>
-            <p className="mt-2 text-[13px] leading-relaxed text-[#7b2d2d] max-w-2xl">
-              Deleting this user will permanently remove the reservation, payment details, and UTR from the admin panel.
-              This action cannot be undone.
-            </p>
-          </div>
-          <button
-            data-testid={`delete-${r.mpm_id}`}
-            disabled={busy}
-            onClick={() => onAct(r.mpm_id, "delete")}
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-[#b94b4b] text-[#fff5f5] text-[10.5px] tracking-[0.32em] uppercase font-semibold hover:bg-[#962f2f] disabled:opacity-60 transition-all"
-          >
-            <Trash2 size={14} /> Delete User
-          </button>
-        </div>
+
       </div>
     </article>
   );
@@ -253,15 +235,11 @@ export default function AdminPage() {
   if (!code) return <Lock onUnlocked={(c) => setCode(c)} />;
 
   const onAct = async (mpm, action) => {
-    const confirmMessage =
-      action === "delete"
-        ? "Danger: this user will be deleted permanently. This action cannot be undone. Delete this reservation?"
-        : `${action.toUpperCase()} this reservation?`;
-    if (!window.confirm(confirmMessage)) return;
+    if (!window.confirm(`${action.toUpperCase()} this reservation?`)) return;
     setBusy(true);
     try {
       await fetch(`${API}/admin/reservations/${mpm}/${action}`, {
-        method: action === "delete" ? "DELETE" : "POST",
+        method: "POST",
         headers: { "X-Admin-Passcode": code },
       });
       await load();
@@ -364,6 +342,7 @@ export default function AdminPage() {
     </div>
   );
 }
+
 
 
 
